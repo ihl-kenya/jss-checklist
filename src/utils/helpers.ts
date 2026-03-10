@@ -1,4 +1,4 @@
-import type { SectionSummaryField, TableField } from "../types/form";
+import type { TableField } from "../types/form";
 
 export const slugify = (value: string) =>
  value
