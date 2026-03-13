@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import type { TableField } from "../../types/form";
 import { calculateTableRows } from "../../utils/FormEngine";
 
@@ -9,12 +9,23 @@ interface Props {
 }
 
 const TableRenderer: React.FC<Props> = ({ field, value = [], onChange }) => {
+  // 1. We determine the initial rows by checking for value, then defaultValue, then falling back to empty rows.
   const rows =
-    value.length > 0
+    value && value.length > 0
       ? value
+      : field.defaultValue && field.defaultValue.length > 0
+      ? field.defaultValue
       : Array.from({ length: field.minRows || 1 }, () =>
           Object.fromEntries(field.columns.map((col) => [col.key, ""]))
         );
+
+  // 2. We use a useEffect to ensure that if we load the component and it uses default values,
+  // we pass those up to the main form state immediately so the data isn't lost.
+  useEffect(() => {
+    if ((!value || value.length === 0) && field.defaultValue && field.defaultValue.length > 0) {
+      onChange(field.defaultValue);
+    }
+  }, []); // Run only once on mount
 
   const handleCellChange = (rowIndex: number, key: string, cellValue: any) => {
     const updatedRows = [...rows];
@@ -92,7 +103,6 @@ const TableRenderer: React.FC<Props> = ({ field, value = [], onChange }) => {
           </tbody>
         </table>
       </div>
-
       <button type="button" onClick={addRow} style={{ marginTop: 10 }}>
         Add Row
       </button>

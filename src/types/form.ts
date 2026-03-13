@@ -39,7 +39,7 @@ export interface InputField extends BaseField {
 
 export interface SelectField extends BaseField {
   type: "select" | "radio";
-  options: Option[];
+  options?: Option[];
 }
 
 export interface CheckboxField extends BaseField {
@@ -64,6 +64,7 @@ export interface TableField extends BaseField {
   type: "table";
   columns: TableColumn[];
   minRows?: number;
+  defaultValue?: Record<string, any>[];
 }
 
 export interface SectionSummaryField extends BaseField {
@@ -84,6 +85,7 @@ export type Field =
 export interface FieldGroup {
   title?: string;
   fields: Field[];
+  className?: string;
 }
 
 export interface FormSection {

@@ -22,21 +22,26 @@ export const isFieldVisible = (field: Field, formData: Record<string, any>): boo
   });
 };
 
+/**
+ * AUTOFILL LOGIC
+ * Updated to trigger from facilityName dropdown selection
+ */
 export const applyMflAutofill = (formData: Record<string, any>): Record<string, any> => {
-  const code = String(formData.facilityMflCode || "").trim();
-  if (!code) return formData;
+  const name = String(formData.facilityName || "").trim();
+  if (!name) return formData;
 
-  const facility = mflFacilities.find((item) => item.mflCode === code);
+  // Find the facility matching the selected name
+  const facility = mflFacilities.find((item) => item.facilityName === name);
   if (!facility) return formData;
 
+  // Map the data from your MflFacilityRecord to your form fields
   return {
     ...formData,
-    facilityName: facility.facilityName || formData.facilityName || "",
+    facilityMflCode: facility.mflCode || formData.facilityMflCode || "",
     county: facility.county || formData.county || "",
     subCounty: facility.subCounty || formData.subCounty || "",
     facilityLevel: facility.facilityLevel || formData.facilityLevel || "",
-    ownership: facility.ownership || formData.ownership || "",
-  };
+    ownership: facility.ownership === "moh" ? "MOH" : (facility.ownership || formData.ownership || ""),  };
 };
 
 export const calculateTableRows = (fieldName: string, rows: Record<string, any>[]): Record<string, any>[] => {
@@ -144,8 +149,10 @@ export const buildOverviewTable2 = (formData: Record<string, any>): Record<strin
 export const applyGlobalFormLogic = (rawFormData: Record<string, any>): Record<string, any> => {
   let next = { ...rawFormData };
 
+  // 1. Run the Autofill logic
   next = applyMflAutofill(next);
 
+  // 2. Run Table Calculations
   const tableFieldsToCalculate = [
     "stockMovementTable",
     "malariaScreeningVsMrdt",
@@ -160,6 +167,7 @@ export const applyGlobalFormLogic = (rawFormData: Record<string, any>): Record<s
     }
   });
 
+  // 3. Build Summary Overview Tables
   next.overviewTable1 = buildOverviewTable1(next);
   next.overviewTable2 = buildOverviewTable2(next);
 

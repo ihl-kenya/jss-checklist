@@ -45,7 +45,7 @@ input[type="date"],
 input[type="number"],
 input[type="tel"],
 select {
-  padding: 12px; /* Adjust padding to make fields larger or smaller */
+  padding: 6px; /* Adjust padding to make fields larger or smaller */
   width: 100%;
   box-sizing: border-box;
   border: 1px solid #ccc; /* Change border color */
@@ -270,7 +270,63 @@ td input, td select {
   border-radius: 2px;
 }
 
+/* =========================================
+   GENERAL SECTION GRID LAYOUT (LABELS ABOVE)
+   ========================================= */
 
+.general-info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Two columns */
+  gap: 15px 150px; /* Adds space between the rows and columns */
+  margin-bottom: 25px;
   
+  /* REDUCE LENGTH: Adjust this value to make the boxes shorter */
+  max-width: 800px; 
+  margin-left: 0;
+}
+
+.general-info-grid .field-container {
+  display: flex;
+  flex-direction: column; /* This puts the label ABOVE the box */
+  margin-bottom: 0;
+  align-items: flex-start;
+}
+
+/* Label styling (Top position) */
+.general-info-grid .field-container > label {
+  background-color: transparent; /* Removed grey background for 'Above' style */
+  margin-bottom: 6px; /* Space between label and box */
+  padding: 0;
+  width: 100%;
+  border-right: none;
+  font-size: 14px;
+  font-weight: bold;
+  color: #000;
+}
+
+/* Input/Select styling */
+.general-info-grid .field-container > input,
+.general-info-grid .field-container > select {
+  border: 1px solid #ccc; /* Restored border since it's no longer a 'table cell' */
+  border-radius: 4px;
+  width: 100%; /* Fills the container, which is limited by the grid max-width */
+  padding: 8px 10px;
+  height: 40px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+/* Ensure read-only fields look distinct but consistent */
+.general-info-grid .field-container > input[readOnly] {
+  background-color: #f9f9f9;
+  color: #555;
+}
+
+/* Focus state */
+.general-info-grid .field-container > input:focus,
+.general-info-grid .field-container > select:focus {
+  border-color: #0056b3;
+  background-color: #fff;
+}
 
 
