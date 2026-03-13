@@ -6,18 +6,19 @@ export const section2: FormSection = {
   title: "2. Human Resource Capacity Building",
   groups: [
     {
-      title: "Focus on Commodity Management Supervision",
+      title: "A. FOCUS ON COMMODITY MANAGEMENT SUPERVISION",
       fields: [
         {
           name: "receivedCommoditySupervisionVisit",
-          label: "Received commodity management supervisory visit in last 3 months",
+          label: "i. Have you received a commodity management supervisory visit in the last 3 months? (Check for evidence)",
           type: "radio",
           options: yesNoOptions,
         },
         {
           name: "commoditySupervisionBy",
-          label: "If yes, by who?",
+          label: "If yes, by who? Indicate designation(s) drop down (allow for >1)– National, CHMT, SCHMT, Partners",
           type: "multiselect",
+          visibleWhen: [{ field: "receivedCommoditySupervisionVisit", equals: "yes" }],
           options: [
             { label: "National", value: "national" },
             { label: "CHMT", value: "chmt" },
@@ -27,51 +28,79 @@ export const section2: FormSection = {
         },
         {
           name: "capacityBuildingDone",
-          label: "Did supervision team perform capacity building on commodity management?",
+          label: "ii. Did the supervision team perform any capacity building on commodity management?",
           type: "radio",
           options: yesNoOptions,
+          visibleWhen: [{ field: "receivedCommoditySupervisionVisit", equals: "yes" }],
         },
         {
           name: "capacityBuildingTopics",
-          label: "Capacity Building Topics Covered",
+          label: "If yes, which topics did they cover?",
           type: "table",
+          visibleWhen: [{ field: "capacityBuildingDone", equals: "yes" }],
           columns: [
-            { key: "no", label: "No", type: "number" },
-            { key: "topic", label: "Topic", type: "text" },
-            { key: "covered", label: "Yes/No", type: "select", options: yesNoOptions },
+            { key: "no", label: "No", type: "number", readOnly: true },
+            { key: "topic", label: "Topic", type: "text", readOnly: true },
+            { key: "covered", label: "YES/NO", type: "select", options: yesNoOptions },
+          ],
+          defaultValue: [
+            { no: 1, topic: "Receiving", covered: "" },
+            { no: 2, topic: "Storage Practices", covered: "" },
+            { no: 3, topic: "Issuing", covered: "" },
+            { no: 4, topic: "Reporting & Requesting", covered: "" },
+            { no: 5, topic: "Information management", covered: "" },
+            { no: 6, topic: "Pharmacovigilance", covered: "" },
+            { no: 7, topic: "Others (Specify)", covered: "" },
           ],
           minRows: 7,
         },
         {
           name: "previousActionPoints",
-          label: "Action points agreed upon at last supervision visit",
+          label: "iii. Review the action points agreed upon at the last commodity supervision visit, if any (allow skip if ‘No’ is selected above)",
           type: "table",
+          visibleWhen: [{ field: "receivedCommoditySupervisionVisit", equals: "yes" }],
           columns: [
             { key: "actionPoint", label: "Previous Action point", type: "textarea" },
-            { key: "status", label: "Status", type: "select", options: doneOptions },
-            { key: "reasonNotDone", label: "Reason for Not Done", type: "textarea" },
+            { key: "status", label: "Status Done/Not Done", type: "select", options: doneOptions },
+            { key: "reasonNotDone", label: "Reason for Not done", type: "textarea" },
           ],
-          minRows: 4,
+          minRows: 3,
         },
         {
           name: "staffTrainedCommodityManagement",
-          label: "Any departmental staff attended commodity management training in last 1 year?",
+          label: "iv. Has any of the departmental staff attended any commodity management training (in person or online) in the last 1 year?",
           type: "radio",
           options: yesNoOptions,
         },
-        { name: "numberTrained", label: "No. trained", type: "number" },
-        { name: "trainingDuration", label: "Duration of training", type: "text" },
-        { name: "trainingTopic", label: "Topic of training", type: "text" },
+        { 
+          name: "numberTrained", 
+          label: "No. trained:", 
+          type: "number",
+          visibleWhen: [{ field: "staffTrainedCommodityManagement", equals: "yes" }] 
+        },
+        { 
+          name: "trainingDuration", 
+          label: "Duration of training:", 
+          type: "text",
+          visibleWhen: [{ field: "staffTrainedCommodityManagement", equals: "yes" }] 
+        },
+        { 
+          name: "trainingTopic", 
+          label: "Topic of training:", 
+          type: "text",
+          visibleWhen: [{ field: "staffTrainedCommodityManagement", equals: "yes" }] 
+        },
         {
           name: "hasCME",
-          label: "Does the facility have a CME system/structure?",
+          label: "v. Does the facility have a Continuing Medical Education (CME) system/ structure?",
           type: "radio",
           options: yesNoOptions,
         },
         {
           name: "cmeFrequency",
-          label: "How often are CMEs done?",
+          label: "If yes, how often are the CMEs done? (Ask to see evidence - schedule, minutes, register, attendance lists etc)",
           type: "select",
+          visibleWhen: [{ field: "hasCME", equals: "yes" }],
           options: [
             { label: "Weekly", value: "weekly" },
             { label: "Monthly", value: "monthly" },
@@ -82,11 +111,11 @@ export const section2: FormSection = {
       ],
     },
     {
-      title: "Focus on Commodity Data Quality Assurance (DQA)",
+      title: "B. FOCUS ON COMMODITY DATA QUALITY ASSURANCE (DQA)",
       fields: [
         {
           name: "receivedDqaVisit",
-          label: "Received a DQA visit in the last 3 months",
+          label: "i. Have you received a Data Quality Assurance visit in the last 3 months?",
           type: "radio",
           options: yesNoOptions,
         },
@@ -94,6 +123,7 @@ export const section2: FormSection = {
           name: "dqaVisitBy",
           label: "If yes, by who?",
           type: "multiselect",
+          visibleWhen: [{ field: "receivedDqaVisit", equals: "yes" }],
           options: [
             { label: "National", value: "national" },
             { label: "CHMT", value: "chmt" },
@@ -103,18 +133,28 @@ export const section2: FormSection = {
         },
         {
           name: "dqaRecommendationsReceived",
-          label: "Received recommendations/capacity building to improve DQA",
+          label: "ii. Did you receive/do you recall any recommendations or capacity building to improve accuracy, completeness, and/or timeliness?",
           type: "radio",
           options: yesNoOptions,
+          visibleWhen: [{ field: "receivedDqaVisit", equals: "yes" }],
         },
         {
           name: "hasDqaReport",
-          label: "Do you have a copy of DQA findings/recommendations report?",
+          label: "iii. Do you have a copy of DQA findings/recommendations report?",
           type: "radio",
           options: yesNoOptions,
+          visibleWhen: [{ field: "receivedDqaVisit", equals: "yes" }],
         },
-        { name: "dqaReportDate", label: "Date on evidence/report", type: "date" },
-        makeSectionSummary("Human Resource Capacity Building"),
+        { 
+          name: "dqaReportDate", 
+          label: "Date on evidence/report", 
+          type: "date",
+          visibleWhen: [{ field: "hasDqaReport", equals: "yes" }],
+        },
+        makeSectionSummary(
+          "C. Human Resource Capacity Building",
+          "humanResourceCapacityBuildingConclusion"
+        ),
       ],
     },
   ],
