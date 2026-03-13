@@ -32,6 +32,7 @@ export interface BaseField {
   helperText?: string;
   visibleWhen?: VisibleWhenRule[];
   readOnly?: boolean;
+  defaultValue?:any;
 }
 
 export interface InputField extends BaseField {

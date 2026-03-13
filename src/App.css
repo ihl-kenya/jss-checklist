@@ -235,3 +235,29 @@ th:first-child, td:first-child {
   font-weight: 500;
   color: #495057;
 }
+
+/* =========================================
+   STICKY FIRST COLUMN FOR WIDE TABLES (SECTION 7)
+   ========================================= */
+
+/* Ensure the table wrapper allows horizontal scrolling */
+.table-container {
+  overflow-x: auto;
+  position: relative;
+}
+
+/* Freeze the first column (both header and data cells) */
+th:first-child, td:first-child {
+  position: sticky;
+  left: 0;
+  /* You must give it a solid background, otherwise text slides 'under' it and looks messy */
+  background-color: #ffffff; 
+  z-index: 1; /* Keeps it above the scrolling columns */
+  border-right: 2px solid #ccc; /* Adds a visual divider to show it's frozen */
+}
+
+/* Make sure the top-left header cell stays above everything when scrolling down */
+th:first-child {
+  background-color: #f8f9fa; /* Matches your existing header background */
+  z-index: 2;
+}
