@@ -39,7 +39,6 @@ export const section2: FormSection = {
           type: "table",
           visibleWhen: [{ field: "capacityBuildingDone", equals: "yes" }],
           columns: [
-            { key: "no", label: "No", type: "number", readOnly: true },
             { key: "topic", label: "Topic", type: "text", readOnly: true },
             { key: "covered", label: "YES/NO", type: "select", options: yesNoOptions },
           ],
