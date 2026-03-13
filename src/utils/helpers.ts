@@ -29,8 +29,8 @@ export const makeSectionSummary = (title: string, customName?: string) => ({
   thematicArea: title,
   columns: [
     { key: "bestPractice", label: "Best Practices", type: "textarea" as const },
-    { key: "keyIssueGap", label: "Key Issue/Gap", type: "textarea" as const },
-    { key: "underlyingCause", label: "Underlying Cause", type: "textarea" as const },
+    { key: "mainIssues", label: "Main Issues/Gaps Identified", type: "textarea" as const }, 
+    { key: "underlyingCauses", label: "Underlying Causes", type: "textarea" as const }, 
   ],
 });
 

@@ -9,15 +9,15 @@ export const section9: FormSection = {
       fields: [
         {
           name: "overviewTable1",
-          label: "Best Practices / Gaps / Root Causes",
+          label: "Best Practices / Gaps / Root Causes (Auto-populated from previous sections)",
           type: "table",
           columns: [
-            { key: "thematicArea", label: "Thematic Area", type: "text" },
-            { key: "bestPractice", label: "Best Practices", type: "textarea" },
-            { key: "mainIssues", label: "Main Issues/Gaps Identified", type: "textarea" },
-            { key: "underlyingCauses", label: "Underlying Causes", type: "textarea" },
+            { key: "thematicArea", label: "Thematic Area", type: "text", readOnly: true },
+            { key: "bestPractice", label: "Best Practices", type: "textarea", readOnly: true },
+            { key: "mainIssues", label: "Main Issues/Gaps Identified", type: "textarea", readOnly: true },
+            { key: "underlyingCauses", label: "Underlying Causes", type: "textarea", readOnly: true },
           ],
-          minRows: 8,
+          minRows: 1,
         },
       ],
     },
@@ -26,7 +26,7 @@ export const section9: FormSection = {
       fields: [
         {
           name: "overviewTable2",
-          label: "Action Plan",
+          label: "Action Plan (Fill this out based on the gaps above)",
           type: "table",
           columns: [
             { key: "thematicArea", label: "Thematic Area", type: "text" },
@@ -37,7 +37,7 @@ export const section9: FormSection = {
             { key: "resourcesNeeded", label: "Resources Needed", type: "textarea" },
             { key: "completionDate", label: "Completion Date", type: "date" },
           ],
-          minRows: 8,
+          minRows: 5,
         },
       ],
     },
