@@ -13,15 +13,18 @@ const GroupRenderer: React.FC<Props> = ({ group, formData, onChange }) => {
     <div style={{ marginBottom: 28 }}>
       {group.title && <h3 style={{ marginBottom: 14 }}>{group.title}</h3>}
 
-      {group.fields.map((field) => (
-        <FieldRenderer
-          key={field.name}
-          field={field}
-          value={formData[field.name]}
-          formData={formData}
-          onChange={onChange}
-        />
-      ))}
+      {/* THIS IS THE NEW WRAPPER THAT APPLIES OUR GRID CSS */}
+      <div className={group.className || ""}>
+        {group.fields.map((field) => (
+          <FieldRenderer
+            key={field.name}
+            field={field}
+            value={formData[field.name]}
+            formData={formData}
+            onChange={onChange}
+          />
+        ))}
+      </div>
     </div>
   );
 };

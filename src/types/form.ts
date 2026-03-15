@@ -26,11 +26,13 @@ export interface BaseField {
   name: string;
   label: string;
   type: FieldType;
+  className?: string,
   placeholder?: string;
   required?: boolean;
   helperText?: string;
   visibleWhen?: VisibleWhenRule[];
   readOnly?: boolean;
+  defaultValue?:any;
 }
 
 export interface InputField extends BaseField {
@@ -39,7 +41,7 @@ export interface InputField extends BaseField {
 
 export interface SelectField extends BaseField {
   type: "select" | "radio";
-  options: Option[];
+  options?: Option[];
 }
 
 export interface CheckboxField extends BaseField {
@@ -58,12 +60,15 @@ export interface TableColumn {
   options?: Option[];
   readOnly?: boolean;
   computed?: boolean;
+  width?: string; 
+  calculate?: (row: Record<string, any>) => string | number;
 }
 
 export interface TableField extends BaseField {
   type: "table";
   columns: TableColumn[];
   minRows?: number;
+  defaultValue?: Record<string, any>[];
 }
 
 export interface SectionSummaryField extends BaseField {
@@ -84,6 +89,7 @@ export type Field =
 export interface FieldGroup {
   title?: string;
   fields: Field[];
+  className?: string;
 }
 
 export interface FormSection {

@@ -4,6 +4,7 @@ import {
   makeSectionSummary,
   yesNoOptions,
 } from "../../utils/helpers";
+import { mflFacilities } from "../../data/mflFacilities"; 
 
 const positionOptions = [
   "Facility in charge",
@@ -22,34 +23,68 @@ export const section1: FormSection = {
   groups: [
     {
       title: "A. General",
+      className: "general-info-grid", 
       fields: [
-        { name: "facilityName", label: "Facility Name", type: "text" },
-        { name: "dateOfVisit", label: "Date of Visit", type: "date" },
-        { name: "facilityMflCode", label: "Facility MFL Code", type: "text" },
-        { name: "supervisionTeamNo", label: "Supervision Team No", type: "text" },
-        { name: "facilityLevel", label: "Facility Level", type: "text" },
-        { name: "teamLeader", label: "Name of Supervision Team Leader", type: "text" },
+        { 
+          name: "facilityName",
+          label: "Facility Name:",
+          type: "select", 
+          helperText: "Select a facility",
+          options: mflFacilities
+          .slice()
+          .sort((a, b) => a.facilityName.localeCompare(b.facilityName))
+          .map((facility: any) => ({
+            label: facility.facilityName,
+            value: facility.facilityName
+          }))
+        },
+        { name: "dateOfVisit",
+           label: "Date of Visit:",
+            type: "date" },
+        
+        { name: "facilityMflCode",
+           label: "Facility MFL Code:", 
+           type: "text", readOnly: true },
+        { name: "supervisionTeamNo",
+           label: "Supervision Team No:",
+            type: "text" },
+        
+        { name: "facilityLevel",
+           label: "Facility Level:",
+            type: "text", 
+            readOnly: true },
+        { name: "teamLeader",
+           label: "Name of Supervision Team Leader:",
+            type: "text" },
+        
         {
           name: "ownership",
-          label: "Ownership",
-          type: "select",
-          options: [
-            { label: "MoH", value: "moh" },
-            { label: "FBO", value: "fbo" },
-            { label: "Private", value: "private" },
-            { label: "Others", value: "others" },
-          ],
+          label: "Ownership (MoH, FBO, Private, Others):",
+          type: "text", 
+          readOnly: true,
         },
-        { name: "respondentName", label: "Name of Respondent", type: "text" },
-        { name: "county", label: "County", type: "text" },
+        { name: "respondentName", 
+          label: "Name of Respondent:", 
+          type: "text" },
+        
+        { name: "county", 
+          label: "County:",
+           type: "text",
+           readOnly: true },
         {
           name: "respondentPosition",
-          label: "Position/Designation of Respondent",
+          label: "Position/Designation of Respondent:",
           type: "select",
           options: positionOptions,
         },
-        { name: "subCounty", label: "Sub-county", type: "text" },
-        { name: "respondentPhone", label: "Tel. Contact of Respondent", type: "text" },
+        
+        { name: "subCounty", 
+          label: "Sub-county:",
+           type: "text", 
+           readOnly: true },
+        { name: "respondentPhone", 
+          label: "Tel. Contact of Respondent:",
+           type: "text" },
       ],
     },
     {
@@ -57,7 +92,7 @@ export const section1: FormSection = {
       fields: [
         {
           name: "facilityManagementTeam",
-          label: "Facility Management Team",
+          label: "i. Facility Management Team",
           type: "select",
           options: availableOptions,
         },
@@ -65,6 +100,8 @@ export const section1: FormSection = {
           name: "facilityManagementMembers",
           label: "Facility Management Team Members",
           type: "table",
+          visibleWhen: [{ field: "facilityManagementTeam",
+             equals: "available" }],
           columns: [
             { key: "no", label: "No", type: "number" },
             {
@@ -81,16 +118,18 @@ export const section1: FormSection = {
           label: "Minutes of meetings",
           type: "select",
           options: availableOptions,
+          visibleWhen: [{ field: "facilityManagementTeam", equals: "available" }],
         },
         {
           name: "facilityManagementLastMeetingDate",
           label: "Date of last meeting",
           type: "date",
+          visibleWhen: [{ field: "facilityManagementMinutes", equals: "available" }],
         },
 
         {
           name: "qualityImprovementTeam",
-          label: "Facility Quality Improvement Team",
+          label: "ii. Facility Quality Improvement Team",
           type: "select",
           options: availableOptions,
         },
@@ -98,6 +137,7 @@ export const section1: FormSection = {
           name: "qualityImprovementMembers",
           label: "Quality Improvement Team Members",
           type: "table",
+          visibleWhen: [{ field: "qualityImprovementTeam", equals: "available" }],
           columns: [
             { key: "no", label: "No", type: "number" },
             {
@@ -114,16 +154,18 @@ export const section1: FormSection = {
           label: "Minutes of meetings",
           type: "select",
           options: availableOptions,
+          visibleWhen: [{ field: "qualityImprovementTeam", equals: "available" }],
         },
         {
           name: "qualityImprovementLastMeetingDate",
           label: "Date of last meeting",
           type: "date",
+          visibleWhen: [{ field: "qualityImprovementMinutes", equals: "available" }],
         },
 
         {
           name: "mtcAvailable",
-          label: "Medicines and Therapeutics Committee (if Hospital)",
+          label: "iii. Medicines and Therapeutics Committee (if Hospital)",
           type: "select",
           options: availableOptions,
         },
@@ -131,6 +173,7 @@ export const section1: FormSection = {
           name: "mtcMembers",
           label: "MTC Core Members",
           type: "table",
+          visibleWhen: [{ field: "mtcAvailable", equals: "available" }],
           columns: [
             { key: "no", label: "No", type: "number" },
             {
@@ -147,29 +190,39 @@ export const section1: FormSection = {
           label: "Minutes of meetings",
           type: "select",
           options: availableOptions,
+          visibleWhen: [{ field: "mtcAvailable", equals: "available" }],
         },
-        { name: "mtcLastMeetingDate", label: "Date of last meeting", type: "date" },
+        {
+          name: "mtcLastMeetingDate",
+          label: "Date of last meeting",
+          type: "date",
+          visibleWhen: [{ field: "mtcMinutes", equals: "available" }],
+        },
 
         {
           name: "hptReceiptFocalPersons",
-          label: "HPT Receipt Focal Person(s)",
+          label: "iv. HPT Receipt Focal Person(s)",
           type: "multiselect",
           options: positionOptions,
         },
-        { name: "hptReceiptOther", label: "Other focal person (specify)", type: "text" },
+        {
+          name: "hptReceiptOther",
+          label: "Other focal person (specify)",
+          type: "text",
+          visibleWhen: [{ field: "hptReceiptFocalPersons", includes: "other" }], 
+        },
         {
           name: "advanceDeliveryAlert",
-          label: "Facility received advance alert of dispatch/delivery time",
+          label: "Did the facility receive advance alert of dispatch/delivery time?",
           type: "radio",
           options: yesNoOptions,
         },
 
         {
           name: "wasteDisposalCommitteeMembers",
-          label: "Waste Management/Disposal Committee Members",
+          label: "v. Waste Management/Disposal Committee Members",
           type: "table",
           columns: [
-            { key: "no", label: "No", type: "number" },
             {
               key: "position",
               label: "Position/Designation",
@@ -177,7 +230,7 @@ export const section1: FormSection = {
               options: positionOptions,
             },
           ],
-          minRows: 6,
+          minRows: 3,
         },
         {
           name: "wasteDisposalDocs",
@@ -185,7 +238,11 @@ export const section1: FormSection = {
           type: "select",
           options: availableOptions,
         },
-        { name: "lastDisposalDate", label: "Date of last disposal activity", type: "date" },
+        {
+          name: "lastDisposalDate",
+          label: "Date of last disposal activity",
+          type: "date",
+        },
       ],
     },
     {
@@ -196,8 +253,18 @@ export const section1: FormSection = {
           label: "Treatment Services Offered",
           type: "table",
           columns: [
-            { key: "service", label: "Service", type: "text" },
+            { key: "service", label: "Service", type: "text", readOnly: true },
             { key: "available", label: "Yes/No", type: "select", options: yesNoOptions },
+          ],
+          defaultValue: [
+            { service: "Outpatient clinic", available: "" },
+            { service: "MCH/FP", available: "" },
+            { service: "Maternity services – Normal deliveries", available: "" },
+            { service: "Maternity services (Comprehensive Emergency Obstetric Care)", available: "" },
+            { service: "HIV Comprehensive Care Clinic (CCC)", available: "" },
+            { service: "TB Clinic (Routine)", available: "" },
+            { service: "TB Clinic (MDR Treatment)", available: "" },
+            { service: "Inpatient services", available: "" },
           ],
           minRows: 8,
         },
@@ -214,15 +281,40 @@ export const section1: FormSection = {
         },
         {
           name: "laboratoryTests",
-          label: "Laboratory Tests Offered",
+          label: "If yes, does the lab do these specific tests?",
           type: "table",
+          visibleWhen: [{ field: "hasLaboratory", equals: "yes" }],
           columns: [
-            { key: "test", label: "Test", type: "text" },
-            { key: "available", label: "Yes/No", type: "select", options: yesNoOptions },
+            { key: "test", label: "TEST", type: "text", readOnly: true },
+            { key: "available", label: "YES / NO", type: "select", options: yesNoOptions },
           ],
-          minRows: 12,
+          defaultValue: [
+            { test: "Hemoglobin", available: "" },
+            { test: "Urinalysis", available: "" },
+            { test: "Blood sugar", available: "" },
+            { test: "VDRL", available: "" },
+            { test: "Malaria RDT", available: "" },
+            { test: "Microscopy - routine", available: "" },
+            { test: "Microscopy - TB", available: "" },
+            { test: "HIV Screening test", available: "" },
+            { test: "HIV confirmatory test", available: "" },
+            { test: "Gene Xpert", available: "" },
+            { test: "CD4", available: "" },
+            { test: "HIV Viral Load", available: "" },
+            { test: "HIV Early Infant Diagnosis", available: "" },
+            { test: "Cervical cancer screening", available: "" },
+          ],
+          minRows: 14,
         },
-        makeSectionSummary("Facility Governance and Services"),
+      ],
+    },
+    {
+      title: "E. In Conclusion",
+      fields: [
+        makeSectionSummary(
+          "Facility Governance and Services",
+          "facilityGovernanceAndServicesConclusion"
+        ),
       ],
     },
   ],

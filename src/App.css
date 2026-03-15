@@ -1,7 +1,11 @@
+/* =========================================
+   GLOBAL STYLES
+   ========================================= */
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  color: #000000; /* Change this for the default text color */
+  color: #000000;
   margin: 0;
+  background-color: #f4f7f9;
 }
 
 #root {
@@ -28,6 +32,9 @@ h2 {
   font-size: 1.75rem;
 }
 
+/* =========================================
+   FORM ELEMENTS
+   ========================================= */
 form {
   margin-top: 2rem;
 }
@@ -44,27 +51,24 @@ input[type="text"],
 input[type="date"],
 input[type="number"],
 input[type="tel"],
-select {
-  padding: 12px; /* Adjust padding to make fields larger or smaller */
+select,
+textarea {
+  padding: 8px 12px;
   width: 100%;
   box-sizing: border-box;
-  border: 1px solid #ccc; /* Change border color */
+  border: 1px solid #ccc;
   border-radius: 4px;
   transition: border-color 0.2s;
-  background-color: #ffffff; /* Change background color of inputs */
-  color: #000000; /* ADD THIS LINE: Ensures typed text is black */
+  background-color: #ffffff;
+  color: #000000;
+  font-size: 14px;
 }
 
-input[type="text"]:focus,
-input[type="date"]:focus,
-input[type="number"]:focus,
-input[type="tel"]:focus,
-select:focus {
+input:focus, select:focus, textarea:focus {
   outline: none;
   border-color: #0056b3;
   box-shadow: 0 0 0 2px rgba(0, 86, 179, 0.2);
 }
-
 
 select {
   appearance: none;
@@ -75,16 +79,15 @@ select {
   padding-right: 2.5rem;
 }
 
-input[type="radio"] {
-  margin-right: 8px;
-}
-
+/* =========================================
+   BUTTONS
+   ========================================= */
 button {
-  padding: 12px 24px;
+  padding: 10px 20px;
   cursor: pointer;
   border-radius: 4px;
   border: none;
-  font-size: 1rem;
+  font-size: 14px;
   font-weight: 600;
   transition: background-color 0.2s, transform 0.1s;
 }
@@ -97,180 +100,218 @@ button[type="submit"] {
   padding: 15px 30px;
 }
 
-button[type="submit"]:hover {
-  background-color: #218838;
-  transform: translateY(-1px);
-}
-
 button[type="button"] {
   background-color: #007bff;
   color: white;
 }
 
-button[type="button"]:hover {
-  background-color: #0056b3;
+button:hover {
+  opacity: 0.9;
 }
 
-.remove-button {
-  color: #dc3545;
-  cursor: pointer;
-  border: none;
-  background: none;
-  padding: 4px;
-  font-size: 0.9rem;
-}
-.remove-button:hover {
-  color: #c82333;
-  text-decoration: underline;
-}
-
-.form-section {
-  border: 1px solid #e0e0e0; /* Change border around sections */
-  margin: 30px 0; /* Adjust spacing between sections */
-  padding: 25px; /* Adjust spacing inside sections */
-  border-radius: 8px;
-  background-color: white;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.05);
-}
-
-.field-container {
-  margin-bottom: 25px;
-}
-
-.group-container {
-  margin-left: 15px;
-  padding-left: 20px;
-  border-left: 3px solid #e0e0e0;
-}
-
-.debug-box {
-  margin-top: 50px;
-  padding: 20px;
-  background-color: #282c34;
-  color: #61dafb;
-  border-radius: 8px;
-  overflow-x: auto;
-  font-size: 13px;
-  line-height: 1.6;
-}
-
-.debug-box h3 {
-  margin-top: 0;
-  color: #fff;
-}
-
-/* Table Styles */
+/* =========================================
+   TABLE STYLES & TEXT WRAPPING
+   ========================================= */
 .table-container {
   overflow-x: auto;
   border: 1px solid #ddd;
   padding: 10px;
   background-color: #ffffff;
   border-radius: 4px;
+  margin-bottom: 20px;
 }
 
 table {
   width: 100%;
   border-collapse: collapse;
-  margin-bottom: 10px;
 }
 
 th, td {
   border: 1px solid #ccc;
-  padding: 8px;
+  padding: 10px;
   text-align: left;
+  vertical-align: top; /* Ensures text stays at the top when rows expand */
+  word-wrap: break-word;
+  white-space: normal; /* Enables wrapping for long text */
 }
 
 th {
-  background-color: #ffffff;
+  background-color: #f8f9fa;
   font-size: 13px;
-  font-weight: 600;
-}
-
-td input, td select {
-  padding: 6px;
-  font-size: 13px;
-}
-
-/* Complex Matrix */
-.complex-matrix-container {
-  overflow-x: auto;
-  border: 2px solid #0056b3;
-  border-radius: 8px;
-}
-
-.complex-matrix-container th {
-  background-color: #0056b3;
-  color: white;
-  padding: 12px;
-  min-width: 120px;
-  font-size: 13px;
-}
-
-.complex-matrix-container .group-header td {
-  background-color: #ffffff;
-  padding: 10px;
-  font-weight: bold;
-  border: 1px solid #ccc;
-}
-
-.complex-matrix-container .calculated-cell {
-  background-color: #ffffff;
-  text-align: center;
   font-weight: bold;
 }
 
-.complex-matrix-container .calculated-cell.negative {
-  color: #dc3545;
+/* Give the guideline/first column more width */
+th:first-child, td:first-child {
+  width: 50%;
+  min-width: 300px;
 }
 
+/* The wrapper used in TableRenderer for read-only cells to allow wrapping */
+.readonly-wrapper {
+  width: 100%;
+  min-height: 34px;
+  padding: 6px 8px;
+  font-size: 13px;
+  line-height: 1.4;
+  word-break: break-word;
+  white-space: normal;
+  background-color: #f9f9f9;
+  border: 1px solid #eee;
+  border-radius: 4px;
+  box-sizing: border-box;
+  display: block;
+}
 
 /* =========================================
-   HEADER DASHBOARD STYLES
+   GENERAL SECTION (LABELS ABOVE BOXES)
    ========================================= */
-
-.header-container {
-  width: 100%;
-  margin-bottom: 10px;
+.general-info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px 40px; /* Adjusted gap to be tighter */
+  margin-bottom: 25px;
+  max-width: 800px; /* Reduced width to make boxes shorter from left */
 }
 
-/* Deep Navy Banner */
+.general-info-grid .field-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-bottom: 0;
+}
+
+.general-info-grid .field-container > label {
+  font-size: 14px;
+  margin-bottom: 4px;
+  color: #333;
+}
+
+.general-info-grid .field-container > input,
+.general-info-grid .field-container > select {
+  height: 38px;
+  border: 1px solid #ccc;
+  background-color: #fff;
+}
+
+.general-info-grid .field-container > input[readOnly] {
+  background-color: #f1f3f5;
+  border-color: #dee2e6;
+  color: #495057;
+}
+
+/* =========================================
+   SECTION CONTAINERS
+   ========================================= */
+.form-section {
+  background-color: white;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  margin-bottom: 40px;
+}
+
+.field-container {
+  margin-bottom: 20px;
+}
+
+.group-container {
+  margin-bottom: 30px;
+  padding-left: 15px;
+  border-left: 4px solid #e9ecef;
+}
+
+/* Indentation for sub-questions */
+.indented-field {
+  margin-left: 40px; /* Pushes the field to the right */
+  padding-left: 15px;
+  border-left: 2px solid #e9ecef; /* Optional: adds a vertical 'connector' line */
+  margin-top: -10px; /* Brings them closer together vertically */
+}
+
+/* Adjust the label size for indented fields if they look too bulky */
+.indented-field label {
+  font-size: 13px;
+  font-weight: 500;
+  color: #495057;
+}
+
+/* =========================================
+   STICKY FIRST COLUMN FOR WIDE TABLES (SECTION 7)
+   ========================================= */
+
+/* Ensure the table wrapper allows horizontal scrolling */
+.table-container {
+  overflow-x: auto;
+  position: relative;
+}
+
+/* Freeze the first column (both header and data cells) */
+th:first-child, td:first-child {
+  position: sticky;
+  left: 0;
+  /* You must give it a solid background, otherwise text slides 'under' it and looks messy */
+  background-color: #ffffff; 
+  z-index: 1; /* Keeps it above the scrolling columns */
+  border-right: 2px solid #ccc; /* Adds a visual divider to show it's frozen */
+}
+
+/* Make sure the top-left header cell stays above everything when scrolling down */
+th:first-child {
+  background-color: #f8f9fa; /* Matches your existing header background */
+  z-index: 2;
+}
+
+/* =========================================
+   HEADER STYLES
+   ========================================= */
 .header-banner {
-  background-color: #214094; 
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 12px 24px;
-  border-radius: 4px;
-  height: 150px;
+  background-color: #0056b3; /* The professional blue background */
+  padding: 20px 30px;
+  border-radius: 8px; /* Matches the rounded corners of your form */
+  margin-bottom: 30px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
-.header-titles .title-line {
-  color: #ffffff;         /* Forces text to be white */
-  border-bottom: none;    
-  text-align: center;     /* Keeps text centered */
-  margin: 20px 0;          
-  padding-bottom: 0;     
+/* White background box for the logos to make them pop against the blue */
+.header-logo-container {
+  background-color: #ffffff; 
+  padding: 10px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.header-titles h1.title-line {
-  font-size: 2.5rem;
-}
-
-.header-titles h2.title-line {
-  font-size: 1.8rem;
-  font-weight: 350;
-}
-
-/* Logos on the sides */
 .header-logo {
-  height: 120px; 
+  height: 90px; /* Adjust this if the logos are too big or small */
   width: auto;
-  background-color: white; 
-  padding: 4px;
-  border-radius: 2px;
+  object-fit: contain;
 }
 
+/* Centers the title and takes up the remaining middle space */
+.header-titles {
+  flex-grow: 1;
+  text-align: center;
+  padding: 0 20px;
+}
 
-  
+/* Overrides the global black h1 styles */
+.header-titles h1.title-line {
+  color: #ffffff; 
+  margin: 0 0 10px 0;
+  font-size: 2.2rem;
+  border: none;
+}
 
-
+/* Overrides the global black h2 styles and removes the blue underline */
+.header-titles h2.title-line {
+  color: #e0e0e0; /* Slightly softer white for the subtitle */
+  margin: 0;
+  font-size: 1.3rem;
+  border-bottom: none; 
+  padding-bottom: 0;
+}
