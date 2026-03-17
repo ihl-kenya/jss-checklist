@@ -13,17 +13,13 @@ export const section8: FormSection = {
   groups: [
     {
       title: "Malaria Triangulation",
+      description: "Notes: Select appropriate tools i.e., MOH 705A and MOH 705B for services in primary care facilities and MOH 706 for hospitals. MOH 743 for commodity data in all facilities.",
       fields: [
-        {
-          name: "skipLogicNote",
-          label: "Apply skip logic. If answer to mRDT was NO in D: LABORATORY TESTS OFFERED above, skip this section",
-          type: "text",
-          readOnly: true
-        },
         {
           name: "malariaScreeningVsMrdt",
           label: "Malaria: Reporting on screening of patients (HMIS data) vs records of mRDT issues (LMIS data) for past three months",
           type: "table",
+          visibleWhen: [{ field: "hasLaboratory", equals: "yes" }],
           columns: [
             { key: "month", label: "", type: "text", readOnly: true, width: "8%" }, 
             { key: "peopleTested", label: "Reported no. of people tested for malaria by mRDT (MOH 705A & MOH 705B/MOH 706)", type: "number" },
@@ -43,6 +39,7 @@ export const section8: FormSection = {
           name: "malariaTreatmentTriangulation",
           label: "Malaria: Comparison reporting of “malaria positive cases” and “patients treated” (HMIS data) vs “AL treatments supplied” (LMIS data) for past three months",
           type: "table",
+          visibleWhen: [{ field: "hasLaboratory", equals: "yes" }],
           columns: [
             { key: "month", label: "", type: "text", readOnly: true, width: "8%" },
             { key: "positiveCases", label: "Reported no. of positive mRDT + Microscopy tests (MOH 705A/MOH 705B/MOH 706)", type: "number" },

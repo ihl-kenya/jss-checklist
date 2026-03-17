@@ -14,7 +14,7 @@ export const section2: FormSection = {
           type: "radio",
           options: yesNoOptions,
         },
-        {
+        /*{
           name: "commoditySupervisionBy",
           label: "By who? Indicate designation(s) ",
           type: "multiselect",
@@ -25,7 +25,7 @@ export const section2: FormSection = {
             { label: "SCHMT", value: "schmt" },
             { label: "Partners", value: "partners" },
           ],
-        },
+        },*/
         {
           name: "capacityBuildingDone",
           label: "ii. Did the supervision team perform any capacity building on commodity management?",
@@ -73,15 +73,21 @@ export const section2: FormSection = {
         },
         { 
           name: "numberTrained", 
-          label: "No. trained:", 
+          label: "Number of staff trained", 
           type: "number",
           visibleWhen: [{ field: "staffTrainedCommodityManagement", equals: "yes" }] 
         },
         { 
           name: "trainingDuration", 
-          label: "Duration of training:", 
-          type: "text",
+          label: " Start Date of training", 
+          type: "date",
           visibleWhen: [{ field: "staffTrainedCommodityManagement", equals: "yes" }] 
+        },
+        {
+          name: "trainingDuration", 
+          label: "End Date of training", 
+          type: "date",
+          visibleWhen: [{ field: "staffTrainedCommodityManagement", equals: "yes" }]
         },
         { 
           name: "trainingTopic", 

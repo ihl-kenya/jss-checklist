@@ -286,7 +286,7 @@ export const section1: FormSection = {
         },
         {
           name: "laboratoryTests",
-          label: "If yes, does the lab do these specific tests?",
+          label: "Does the lab do these specific tests?",
           type: "table",
           visibleWhen: [{ field: "hasLaboratory", equals: "yes" }],
           columns: [

@@ -69,6 +69,7 @@ export interface TableField extends BaseField {
   columns: TableColumn[];
   minRows?: number;
   defaultValue?: Record<string, any>[];
+  description?: string;
 }
 
 export interface SectionSummaryField extends BaseField {
@@ -97,4 +98,5 @@ export interface FormSection {
   id: string;
   title: string;
   groups: FieldGroup[];
+  description?: string;
 }
