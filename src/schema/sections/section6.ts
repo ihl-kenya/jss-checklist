@@ -77,10 +77,16 @@ export const section6: FormSection = {
           label: "vi. If no report was submitted, was there a challenge in submitting to PPB?",
           type: "radio",
           options: yesNoOptions,
+          visibleWhen: [
+            {
+              field: "pvEventsReported",
+              equals: "no"
+            }
+          ]
         },
         {
           name: "mtcPvActivities",
-          label: "vii. Within previous 3 months, has MTC carried out pharmacovigilance activities?",
+          label: "vii. Within previous 3 months, has MTC carried out pharmacovigilance activities? (Request documentation to verify)",
           type: "radio",
           options: yesNoOptions,
         },

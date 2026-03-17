@@ -15,7 +15,7 @@ export const section5: FormSection = {
         },
         {
           name: "storeTypes",
-          label: "If more than one select multiple:",
+          label: "ii. If more than one select multiple:",
           type: "multiselect",
           options: [
             { label: "Pharmaceuticals", value: "pharmaceuticals" },
@@ -96,7 +96,7 @@ export const section5: FormSection = {
           options: yesNoOptions,
         className: "indented-field" },
         { name: "functionalExtinguisher", 
-          label: "ii. l. Is there a functional extinguisher/sand bucket?", 
+          label: "l. Is there a functional extinguisher/sand bucket?", 
           type: "radio", 
           options: yesNoOptions,
           className: "indented-field"
@@ -115,9 +115,10 @@ export const section5: FormSection = {
         { name: "expiredSeparate", label: "vii. Are there expired and/or unusable items are kept separate from other stock?", type: "radio", options: yesNoOptions },
         { 
           name: "expiredStoredSeparately", 
-          label: "If “yes” above, are expired/unusable HPT stored separately from other items?", 
+          label: "Are expired/unusable HPT stored separately from other items?", 
           type: "radio", 
           options: yesNoOptions,
+          className: "indented-field",
           visibleWhen: [{ field: "expiredSeparate", equals: "yes" }]
         },
         { 

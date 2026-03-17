@@ -1,5 +1,5 @@
 import type { FormSection, TableColumn } from "../../types/form";
-import { makeSectionSummary } from "../../utils/helpers";
+import { makeSectionSummary, yesNoOptions } from "../../utils/helpers";
 
 // Define the columns once so we can reuse them across all the sub-tables
 const productColumns: TableColumn[] = [
@@ -22,6 +22,7 @@ export const section7: FormSection = {
   groups: [
     {
       title: "Table: Stock Movement",
+      description: "The value calculation may potentially be done by the HPM mentor/(sub)county pharmacist in charge following the visit, rather than during the JSS visit, in order to save time. The value calculations should be included in the reports at the moment of uploading.",
       fields: [
         {
           name: "stockCardAccuracy",
@@ -29,13 +30,13 @@ export const section7: FormSection = {
           type: "table",
           columns: productColumns,
           defaultValue: [
-            { parameter: "Physical count" },
-            { parameter: "Stock card count" },
-            { parameter: "Variance" },
-            { parameter: "Unit cost of item (*) Preselect supplier(If KEMSA, pre-populate)" },
-            { parameter: "Value of variance (*)" },
-            { parameter: "Stock-out in last 3 months (Y/N)" },
-            { parameter: "Total days stocked out in last 3 months (should not exceed 92 days)" },
+            { id: "physicalCount", parameter: "Physical count", inputType: "number" },
+            { id: "stockCardCount", parameter: "Stock card count", inputType: "number" },
+            { id: "variance", parameter: "Variance", inputType: "number", calculate: "physicalCount - stockCardCount", readOnly: true },
+            { id: "unitCost", parameter: "Unit cost of item (*)", inputType: "number" },
+            { id: "valueOfVariance", parameter: "Value of variance (*)", inputType: "number", calculate: "variance * unitCost", readOnly: true },
+            { id: "stockOut3Months", parameter: "Stock-out in last 3 months (Y/N)", inputType: "select", options: yesNoOptions },
+            { id: "daysStockedOut", parameter: "Total days stocked out in last 3 months", inputType: "number", max: 92 },
           ],
         },
         {
@@ -44,28 +45,28 @@ export const section7: FormSection = {
           type: "table",
           columns: productColumns,
           defaultValue: [
-            { parameter: "Delivery Note number (Latest delivery)" },
-            { parameter: "Did a HF representative endorse the Delivery Note upon receipt? (Y/N)" },
-            { parameter: "Quantity issued by KEMSA/ MEDS (check delivery note/invoice)" },
-            { parameter: "Quantity received by the HF (Cf. entry in Bin Card)" },
-            { parameter: "Discrepancy, if any (auto-calculate)" },
-            { parameter: "Reason for discrepancy (make it not mandatory)" },
-            { parameter: "Calculate value of variance (Ksh) (*) (autocalculate)" },
-            { parameter: "Assess how discrepancy is documented and resolved, E.g. Is there an SOP? Does the staff know of the SOP?" },
-            { parameter: "Does the HF have electronic bin cards? (Y/N)" },
+            { id: "deliveryNote", parameter: "Delivery Note number", inputType: "text" },
+            { id: "endorsed", parameter: "Endorsed Delivery Note? (Y/N)", inputType: "select", options: yesNoOptions },
+            { id: "qtyIssued", parameter: "Quantity issued by KEMSA/MEDS", inputType: "number" },
+            { id: "qtyReceived", parameter: "Quantity received by the HF", inputType: "number" },
+            { id: "discrepancy", parameter: "Discrepancy (auto-calculate)", inputType: "number", calculate: "qtyIssued - qtyReceived", readOnly: true },
+            { id: "reason", parameter: "Reason for discrepancy", inputType: "text" },
+            { id: "valVariance", parameter: "Calculate value of variance (Ksh)", inputType: "number", calculateTable: "stockCardAccuracy", calculate: "discrepancy * unitCost", readOnly: true },
+            { id: "sopAssessment", parameter: "Assess how discrepancy is resolved", inputType: "text" },
+            { id: "electronicBin", parameter: "Does the HF have electronic bin cards? (Y/N)", inputType: "select", options: yesNoOptions },
           ],
         },
         {
           name: "issuesToLowerFacilities",
-          label: "Issues to Other/Lower Health Facilities - Latest Issue from Health Facility to Other/Lower Level Site",
+          label: "Issues to Other/Lower Health Facilities",
           type: "table",
           columns: productColumns,
           defaultValue: [
-            { parameter: "Did the HF issue a given quantity to other HFs? (Latest issue) (Y/N)" },
-            { parameter: "Quantity issued to other HFs as per Bin Card (Latest Issue)" },
-            { parameter: "Quantity issued to other HFs as per S11s available" },
-            { parameter: "Variance" },
-            { parameter: "Calculate value of variance (*) (autocalculate)" },
+            { id: "didIssue", parameter: "Did the HF issue quantity to other HFs? (Y/N)", inputType: "select", options: yesNoOptions },
+            { id: "qtyBinCard", parameter: "Quantity issued as per Bin Card", inputType: "number" },
+            { id: "qtyS11", parameter: "Quantity issued as per S11s available", inputType: "number" },
+            { id: "varianceS11", parameter: "Variance", inputType: "number", calculate: "qtyBinCard - qtyS11", readOnly: true },
+            { id: "valVarianceS11", parameter: "Value of variance", inputType: "number", calculateTable: "stockCardAccuracy", calculate: "varianceS11 * unitCost", readOnly: true },
           ],
         },
         {
@@ -74,28 +75,28 @@ export const section7: FormSection = {
           type: "table",
           columns: productColumns,
           defaultValue: [
-            { parameter: "Are records kept for issues of health products from HF store to dispensing unit? (Y/N)" },
-            { parameter: "Latest qty of commodity issued from HF store to dispensing unit (refer to HF store stock card)" },
-            { parameter: "Qty received by dispensing unit from HF store according to dispensing unit records" },
-            { parameter: "Difference between HF store records vs dispensing unit records" },
-            { parameter: "What are the reasons for the variances?" },
-            { parameter: "Calculate value of variances (Ksh) (*)" },
+            { id: "recordsKept", parameter: "Are records kept for issues to dispensing unit? (Y/N)", inputType: "select", options: yesNoOptions },
+            { id: "qtyIssuedStore", parameter: "Latest qty issued from HF store", inputType: "number" },
+            { id: "qtyReceivedDispensing", parameter: "Qty received by dispensing unit", inputType: "number" },
+            { id: "diffStoreDispensing", parameter: "Difference between store vs dispensing", inputType: "number", calculate: "qtyIssuedStore - qtyReceivedDispensing", readOnly: true },
+            { id: "reasonVariance", parameter: "Reasons for variances?", inputType: "text" },
+            { id: "valVarianceDisp", parameter: "Value of variances (Ksh)", inputType: "number", calculateTable: "stockCardAccuracy", calculate: "diffStoreDispensing * unitCost", readOnly: true },
           ],
         },
         {
           name: "stockMovementAnalysis",
-          label: "Stock Movement Analysis (Facility) - Review Period = Past Calendar Year (i.e. 2024)",
+          label: "Stock Movement Analysis (Facility) - Review Period = Past Calendar Year (2024)",
           type: "table",
           columns: productColumns,
           defaultValue: [
-            { parameter: "Opening stock 01 January 2022 (A)" },
-            { parameter: "Qty received from 1 January to 31st December (B) (include positive adjustments)" },
-            { parameter: "Closing balance (C)" },
-            { parameter: "Reconciliation (D) = A+B -C" },
-            { parameter: "Qty actually issued (E) to dispensing area or other facilities" },
-            { parameter: "Difference between qty issued to HFs vs actual quantity issued: F = D - E" },
-            { parameter: "Establish reasons for differences" },
-            { parameter: "Calculate value of variance (*) (autocalculate)" },
+            { id: "A", parameter: "Opening stock 01 January 2022 (A)", inputType: "number" },
+            { id: "B", parameter: "Qty received (B)", inputType: "number" },
+            { id: "C", parameter: "Closing balance (C)", inputType: "number" },
+            { id: "D", parameter: "Reconciliation (D) = A+B-C", inputType: "number", calculate: "(A + B) - C", readOnly: true },
+            { id: "E", parameter: "Qty actually issued (E)", inputType: "number" },
+            { id: "F", parameter: "Difference (F) = D - E", inputType: "number", calculate: "D - E", readOnly: true },
+            { id: "reasonDiff", parameter: "Establish reasons for differences", inputType: "text" },
+            { id: "valVarianceAnalysis", parameter: "Value of variance (*)", inputType: "number", calculateTable: "stockCardAccuracy", calculate: "F * unitCost", readOnly: true },
           ],
         },
       ],

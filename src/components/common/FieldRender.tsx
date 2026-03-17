@@ -140,6 +140,7 @@ const FieldRenderer: React.FC<Props> = ({ field, value, formData, onChange }) =>
           <TableRenderer
             field={field as any}
             value={value || []}
+            formData={formData}
             onChange={(rows) => onChange(field.name, rows)}
           />
         </div>
