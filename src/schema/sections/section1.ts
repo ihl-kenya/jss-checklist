@@ -25,9 +25,10 @@ export const section1: FormSection = {
       title: "A. General",
       className: "general-info-grid", 
       fields: [
+        // ROW 1 
         { 
           name: "facilityName",
-          label: "Facility Name:",
+          label: "Facility Name",
           type: "select", 
           helperText: "Select a facility",
           options: mflFacilities
@@ -38,53 +39,72 @@ export const section1: FormSection = {
             value: facility.facilityName
           }))
         },
-        { name: "dateOfVisit",
-           label: "Date of Visit:",
-            type: "date" },
-        
-        { name: "facilityMflCode",
-           label: "Facility MFL Code:", 
-           type: "text", readOnly: true },
-        { name: "supervisionTeamNo",
-           label: "Supervision Team No:",
-            type: "text" },
-        
-        { name: "facilityLevel",
-           label: "Facility Level:",
-            type: "text", 
-            readOnly: true },
-        { name: "teamLeader",
-           label: "Name of Supervision Team Leader:",
-            type: "text" },
-        
+        { 
+          name: "county", 
+          label: "County",
+          type: "text",
+          readOnly: true 
+        },
+        { 
+          name: "subCounty", 
+          label: "Sub-county:",
+          type: "text", 
+          readOnly: true 
+        },
+        // ROW 2
+        { 
+          name: "facilityLevel",
+          label: "Facility Level",
+          type: "text", 
+          readOnly: true 
+        },
         {
           name: "ownership",
-          label: "Ownership (MoH, FBO, Private, Others):",
+          label: "Ownership (MoH, FBO, Private, Others)",
           type: "text", 
           readOnly: true,
         },
-        { name: "respondentName", 
-          label: "Name of Respondent:", 
-          type: "text" },
-        
-        { name: "county", 
-          label: "County:",
-           type: "text",
-           readOnly: true },
+        { 
+          name: "facilityMflCode",
+          label: "Facility MFL Code", 
+          type: "text", 
+          readOnly: true 
+        },
+
+        // ROW 3 
+        { 
+          name: "dateOfVisit",
+          label: "Date of Visit:",
+          type: "date" 
+        },
+        { 
+          name: "supervisionTeamNo",
+          label: "Supervision Team Number",
+          type: "text" 
+        },
+        { 
+          name: "teamLeader",
+          label: "Name of Supervision Team Leader:",
+          type: "text" 
+        },
+
+        // -ROW 4 
+        { 
+          name: "respondentName", 
+          label: "Name of Respondent", 
+          type: "text" 
+        },
         {
           name: "respondentPosition",
-          label: "Position/Designation of Respondent:",
+          label: "Position/Designation of Respondent",
           type: "select",
           options: positionOptions,
         },
-        
-        { name: "subCounty", 
-          label: "Sub-county:",
-           type: "text", 
-           readOnly: true },
-        { name: "respondentPhone", 
-          label: "Tel. Contact of Respondent:",
-           type: "text" },
+        { 
+          name: "respondentPhone", 
+          label: "Tel. Contact of Respondent",
+          type: "text" 
+        },
       ],
     },
     {
