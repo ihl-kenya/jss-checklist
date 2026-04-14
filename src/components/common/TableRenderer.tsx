@@ -30,14 +30,8 @@ const TableRenderer: React.FC<Props> = ({ field, value = [], formData = {}, onCh
     let newRow = { ...updatedRows[rowIndex], [key]: cellValue };
 
     // --- MUTUALLY EXCLUSIVE CHECKBOX LOGIC (For Section C/D) ---
-    // If user checks "Yes", automatically uncheck "No"
-    if (key === "isYes" && cellValue === true) {
-      newRow.isNo = false;
-    }
-    // If user checks "No", automatically uncheck "Yes"
-    if (key === "isNo" && cellValue === true) {
-      newRow.isYes = false;
-    }
+    if (key === "isYes" && cellValue === true) newRow.isNo = false;
+    if (key === "isNo" && cellValue === true) newRow.isYes = false;
 
     // --- OTHER SPECIFICATION CLEANUP ---
     if (key === "position" && cellValue !== "other") {
@@ -144,6 +138,8 @@ const TableRenderer: React.FC<Props> = ({ field, value = [], formData = {}, onCh
                       isReadOnly = true;
                     }
 
+                    // --- NEW LINE: Extract cellMax from the column ---
+                    const cellMax = col.max !== undefined ? col.max : row.max;
                     const cellOptions = row.options || col.options;
 
                     return (
@@ -188,9 +184,16 @@ const TableRenderer: React.FC<Props> = ({ field, value = [], formData = {}, onCh
                         ) : (
                           <input
                             type={cellType}
+                            max={cellMax} // --- NEW LINE ---
                             value={row[col.key] || ""}
                             placeholder={col.key === "positionOther" ? "Specify..." : ""}
-                            onChange={(e) => handleCellChange(rowIndex, col.key, e.target.value)}
+                            onChange={(e) => {
+                              // --- NEW GUARD LOGIC ---
+                              if (cellType === "number" && cellMax !== undefined && Number(e.target.value) > cellMax) {
+                                return; // Block it!
+                              }
+                              handleCellChange(rowIndex, col.key, e.target.value);
+                            }}
                             style={{ 
                               width: "100%", 
                               padding: 6, 

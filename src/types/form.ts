@@ -62,6 +62,7 @@ export interface TableColumn {
   readOnly?: boolean;
   computed?: boolean;
   width?: string; 
+  max?: number;
   calculate?: (row: Record<string, any>) => string | number;
 }
 
