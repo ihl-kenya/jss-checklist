@@ -21,16 +21,29 @@ const FieldRenderer: React.FC<Props> = ({ field, value, formData, onChange }) =>
     case "number":
     case "date":
       return (
-        <div className={containerClass} style={{ marginBottom: 16 }}>
+       <div className={containerClass} style={{ marginBottom: 16 }}>
           <label>{field.label}</label>
           <input
             type={field.type}
             value={value || ""}
-            onChange={(e) => onChange(field.name, e.target.value)}
+            min={field.min}
+            max={field.max}
+            onChange={(e) => {
+              const val = e.target.value;
+              
+              if (field.type === "number" && val !== "") {
+                const numVal = Number(val);
+                if (field.max !== undefined && numVal > field.max) return;
+                if (field.min !== undefined && numVal < field.min) return;
+              }
+              
+              onChange(field.name, val);
+            }}
+            placeholder={field.placeholder}
             style={{ width: "100%", marginTop: 6, padding: 8 }}
             readOnly={field.readOnly}
           />
-          {field.helperText && <small>{field.helperText}</small>}
+          {field.helperText && <small style={{ display: "block", marginTop: 4, color: "#666" }}>{field.helperText}</small>}
         </div>
       );
 

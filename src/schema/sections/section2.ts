@@ -77,16 +77,12 @@ export const section2: FormSection = {
           type: "number",
           visibleWhen: [{ field: "staffTrainedCommodityManagement", equals: "yes" }] 
         },
-        { 
-          name: "trainingStartDate", 
-          label: " Start Date of training", 
-          type: "date",
-          visibleWhen: [{ field: "staffTrainedCommodityManagement", equals: "yes" }] 
-        },
         {
-          name: "trainingEnddate", 
-          label: "End Date of training", 
-          type: "date",
+          name: "trainingDuration",
+          label: "Duration of training (in days)",
+          type: "number",
+          min: 1, // Prevents 0 or negative days
+          placeholder: "e.g. 5",
           visibleWhen: [{ field: "staffTrainedCommodityManagement", equals: "yes" }]
         },
         { 

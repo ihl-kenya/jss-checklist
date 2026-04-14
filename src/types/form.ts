@@ -34,6 +34,8 @@ export interface BaseField {
   visibleWhen?: VisibleWhenRule[];
   readOnly?: boolean;
   defaultValue?:any;
+  min?: number;
+  max?: number;
 }
 
 export interface InputField extends BaseField {
