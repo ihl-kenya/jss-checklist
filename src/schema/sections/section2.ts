@@ -14,18 +14,6 @@ export const section2: FormSection = {
           type: "radio",
           options: yesNoOptions,
         },
-        /*{
-          name: "commoditySupervisionBy",
-          label: "By who? Indicate designation(s) ",
-          type: "multiselect",
-          visibleWhen: [{ field: "receivedCommoditySupervisionVisit", equals: "yes" }],
-          options: [
-            { label: "National", value: "national" },
-            { label: "CHMT", value: "chmt" },
-            { label: "SCHMT", value: "schmt" },
-            { label: "Partners", value: "partners" },
-          ],
-        },*/
         {
           name: "capacityBuildingDone",
           label: "ii. Did the supervision team perform any capacity building on commodity management?",
@@ -39,8 +27,8 @@ export const section2: FormSection = {
           type: "table",
           visibleWhen: [{ field: "capacityBuildingDone", equals: "yes" }],
           columns: [
-            { key: "topic", label: "Topic", type: "text", readOnly: true },
-            { key: "covered", label: "YES/NO", type: "select", options: yesNoOptions },
+            { key: "topic", label: "Topic", type: "text", readOnly: true, width: "60%" },
+            { key: "covered", label: "YES/NO", type: "select", options: yesNoOptions, width: "40%" },
           ],
           defaultValue: [
             { no: 1, topic: "Receiving", covered: "" },
@@ -52,6 +40,18 @@ export const section2: FormSection = {
             { no: 7, topic: "Others (Specify)", covered: "" },
           ],
           minRows: 7,
+        },
+        {
+          name: "capacityBuildingOtherSpecify",
+          label: "Please specify the other topic(s) covered:",
+          type: "text",
+          visibleWhen: [
+            { field: "capacityBuildingDone", equals: "yes" },
+            { 
+              field: "capacityBuildingTopics", 
+              includes: { topic: "Others (Specify)", covered: "yes" } 
+            }
+          ],
         },
         {
           name: "previousActionPoints",
