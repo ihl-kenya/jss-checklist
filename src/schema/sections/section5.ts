@@ -50,7 +50,7 @@ export const section5: FormSection = {
           className: "indented-field"
          },
         { name: "verminEvidence", 
-          label: " e. Check for (evidence of) vermin/pests/insects", 
+          label: " e. Is there evidence of vermin/pest/insects?", 
           type: "radio", 
           options: yesNoOptions,
           className: "indented-field"
