@@ -16,7 +16,7 @@ export const section4: FormSection = {
           columns: [
             { key: "tool", label: "TOOL", type: "text", readOnly: true },
             { key: "availability", label: "AVAILABILITY FOR USE YES/NO (*)", type: "select", options: yesNoOptions },
-            { key: "completeness", label: "COMPLETENESS OF CURRENT/ LAST EXEMPLAR YES/NO", type: "select", options: yesNoOptions },
+            { key: "completeness", label: "Completeness of Current/Last entry Indicate Yes/No", type: "select", options: yesNoOptions },
             { key: "remarks", label: "REMARKS", type: "textarea" },
           ],
           defaultValue: [

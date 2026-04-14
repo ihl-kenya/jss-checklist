@@ -15,8 +15,12 @@ export const section5: FormSection = {
         },
         {
           name: "storeTypes",
-          label: "ii. If more than one select multiple:",
+          label: "If more than one select multiple:", 
           type: "multiselect",
+          visibleWhen: [
+            { field: "numberOfStores", notEquals: 1 },
+            { field: "numberOfStores", notEquals: "1" }
+          ],
           options: [
             { label: "Pharmaceuticals", value: "pharmaceuticals" },
             { label: "Medical supplies", value: "medical_supplies" },
@@ -24,82 +28,72 @@ export const section5: FormSection = {
             { label: "Nutrition", value: "nutrition" },
           ],
         },
-        // Individual questions for Observation (ii)
         { name: "storeClean", 
-          label: " a. Is the store clean and tidy?", 
+          label: "ii. a. Is the store clean and tidy?", 
           type: "radio", 
-          options: yesNoOptions,
-          className: "indented-field"
+          options: yesNoOptions
          },
         { name: "adequateLighting",
-          label: " b. Is there adequate lighting?", 
+          label: "b. Is there adequate lighting?", 
           type: "radio", 
-          options: yesNoOptions,
-          className: "indented-field"
+          options: yesNoOptions
          },
         { name: "directSunlight", 
-          label: " c. Are the HPT exposed to direct sunlight?", 
+          label: "c. Are the HPT exposed to direct sunlight?", 
           type: "radio", 
-          options: yesNoOptions,
-          className: "indented-field"
+          options: yesNoOptions
          },
         { name: "moistureLeakage", 
-          label: " d. Presence of moisture/water leakages", 
+          label: "d. Presence of moisture/water leakages", 
           type: "radio", 
-          options: yesNoOptions,
-          className: "indented-field"
+          options: yesNoOptions
          },
         { name: "verminEvidence", 
-          label: " e. Is there evidence of vermin/pest/insects?", 
+          label: "e. Is there evidence of vermin/pest/insects?", 
           type: "radio", 
-          options: yesNoOptions,
-          className: "indented-field"
+          options: yesNoOptions
          },
         { name: "adequateShelving", 
-          label: " f. Is there adequate shelving and pallets?", 
+          label: "f. Is there adequate shelving and pallets?", 
           type: "radio", 
-          options: yesNoOptions,
-          className: "indented-field"
+          options: yesNoOptions
          },
         { name: "neatArrangement", 
-          label: " g. Are HPT stored and neatly arranged on shelves/pallets?", 
+          label: "g. Are HPT stored and neatly arranged on shelves/pallets?", 
           type: "radio", 
-          options: yesNoOptions,
-          className: "indented-field"
+          options: yesNoOptions
          },
         { name: "storeThermometer", 
-          label: " h. Does the store have a thermometer for temperature monitoring?", 
+          label: "h. Does the store have a thermometer for temperature monitoring?", 
           type: "radio", 
-          options: yesNoOptions,
-        className: "indented-field" },
+          options: yesNoOptions
+         },
         { name: "storeSecurity", 
-          label: " i. Is there adequate security (burglar-proofing)?", 
+          label: "i. Is there adequate security (burglar-proofing)?", 
           type: "radio", 
-          options: yesNoOptions,
-          className: "indented-field"
+          options: yesNoOptions
          },
         { name: "designatedAccess", 
-          label: " j. Is there a designated person allowed to access the store?", 
+          label: "j. Is there a designated person allowed to access the store?", 
           type: "radio", 
-          options: yesNoOptions,
-          className: "indented-field"
+          options: yesNoOptions
          },
         { 
           name: "designatedPersonName", 
           label: "If yes, who?", 
           type: "text",
-          visibleWhen: [{ field: "designatedAccess", equals: "yes" }]
+          visibleWhen: [{ field: "designatedAccess", equals: "yes" }],
+          className: "indented-field" // Left this indented since it's a direct follow-up to 'j'
         },
         { name: "hazardousMaterials", 
-          label: " k. Presence of hazardous materials in the store", 
+          label: "k. Presence of hazardous materials in the store", 
           type: "radio", 
-          options: yesNoOptions,
-        className: "indented-field" },
+          options: yesNoOptions
+         },
         { name: "functionalExtinguisher", 
           label: "l. Is there a functional extinguisher/sand bucket?", 
           type: "radio", 
-          options: yesNoOptions,
-          className: "indented-field"
+          options: yesNoOptions
          },
 
         // Questions iii to viii
@@ -112,7 +106,7 @@ export const section5: FormSection = {
           type: "radio", 
           options: yesNoOptions 
         },
-        { name: "expiredSeparate", label: "vii. Are there expired and/or unusable items are kept separate from other stock?", type: "radio", options: yesNoOptions },
+        { name: "expiredSeparate", label: "vii. Are there expired and/or unusable items kept separate from other stock?", type: "radio", options: yesNoOptions },
         { 
           name: "expiredStoredSeparately", 
           label: "Are expired/unusable HPT stored separately from other items?", 
