@@ -117,7 +117,7 @@ const TableRenderer: React.FC<Props> = ({ field, value = [], formData = {}, onCh
           <thead>
             <tr>
               {field.columns.map((col) => (
-                <th key={col.key} style={{ width: col.width || "auto", padding: 8, border: "1px solid #ddd", textAlign: "left", backgroundColor: "#f8f9fa" }}>
+                <th key={col.key} style={{ width: col.width || "auto", padding: 8, border: "1px solid #ddd", textAlign: "left", backgroundColor: "#f8f9fa", textTransform: "none" }}>
                   {col.label}
                 </th>
               ))}
