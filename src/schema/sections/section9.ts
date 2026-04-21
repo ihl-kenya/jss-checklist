@@ -17,7 +17,7 @@ const generatedOverviewTables = summaryMappings.map((mapping) => ({
   isFixed: true,          
   type: "table" as const,
   columns: [
-    { key: "bestPractice", label: "BEST PRACTICES", type: "textarea" as const, readOnly: true },
+    //{ key: "bestPractice", label: "BEST PRACTICES", type: "textarea" as const, readOnly: true },
     { key: "mainIssues", label: "MAIN ISSUES/GAPS IDENTIFIED", type: "textarea" as const, readOnly: true },
     { key: "underlyingCauses", label: "UNDERLYING CAUSES", type: "textarea" as const, readOnly: true },
   ],
@@ -45,7 +45,7 @@ export const section9: FormSection = {
   title: "9. End-of-Visit Summary Overview",
   groups: [
     {
-      title: "Overview Table 1: Best Practices / Gaps + Root Cause Analysis",
+      title: "Overview Table 1: Gaps + Root Cause Analysis",
       description: "Auto-populated from previous sections",
       fields: [
         ...generatedOverviewTables
