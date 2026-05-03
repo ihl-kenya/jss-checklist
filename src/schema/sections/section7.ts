@@ -1,7 +1,6 @@
 import type { FormSection, TableColumn } from "../../types/form";
 import { makeSectionSummary, yesNoOptions } from "../../utils/helpers";
 
-// Define the columns once so we can reuse them across all the sub-tables
 const productColumns: TableColumn[] = [
   { key: "parameter", label: "Table: Stock Movement", type: "text", readOnly: true },
   { key: "hivAdult", label: "HIV 1st line adult TDF/3TC/DTG (300/300/ 50mg) 90s", type: "text" }, 
@@ -64,7 +63,7 @@ export const section7: FormSection = {
           type: "table",
           columns: productColumns,
           defaultValue: [
-            { id: "didIssue", parameter: "Did the HF issue quantity to other HFs? (Y/N)", inputType: "select", options: yesNoOptions },
+            { id: "didIssue", parameter: "Did the Health Facility issue quantity to other Health Facilities? (Y/N)", inputType: "select", options: yesNoOptions },
             { id: "qtyBinCard", parameter: "Quantity issued as per Bin Card", inputType: "number", min: 0 },
             { id: "qtyS11", parameter: "Quantity issued as per S11s available", inputType: "number", min: 0 },
             { id: "varianceS11", parameter: "Variance", inputType: "number", calculate: "qtyBinCard - qtyS11", readOnly: true },
@@ -79,8 +78,8 @@ export const section7: FormSection = {
           columns: productColumns,
           defaultValue: [
             { id: "recordsKept", parameter: "Are records kept for issues to dispensing unit? (Y/N)", inputType: "select", options: yesNoOptions },
-            { id: "qtyIssuedStore", parameter: "Latest qty issued from HF store", inputType: "number", min: 0 },
-            { id: "qtyReceivedDispensing", parameter: "Qty received by dispensing unit", inputType: "number", min: 0 },
+            { id: "qtyIssuedStore", parameter: "Latest quantity issued from Health Facility store", inputType: "number", min: 0 },
+            { id: "qtyReceivedDispensing", parameter: "Quantity received by dispensing unit", inputType: "number", min: 0 },
             { id: "diffStoreDispensing", parameter: "Difference between store vs dispensing", inputType: "number", calculate: "qtyIssuedStore - qtyReceivedDispensing", readOnly: true },
             { id: "reasonVariance", parameter: "Reasons for variances?", inputType: "text" },
             { id: "valVarianceDisp", parameter: "Value of variances (Ksh)", inputType: "number", calculateTable: "stockCardAccuracy", calculate: "diffStoreDispensing * unitCost", readOnly: true },
@@ -88,12 +87,12 @@ export const section7: FormSection = {
         },
         {
           name: "stockMovementAnalysis",
-          label: "Stock Movement Analysis (Facility) - Review Period = Past Calendar Year (2024)",
+          label: "Stock Movement Analysis (Facility) - Review Period = Past Calendar Year (2026)",
           isFixed: true,
           type: "table",
           columns: productColumns,
           defaultValue: [
-            { id: "A", parameter: "Opening stock 01 January 2022 (A)", inputType: "number", min: 0 },
+            { id: "A", parameter: "Opening stock 01 January 2026 (A)", inputType: "number", min: 0 },
             { id: "B", parameter: "Qty received (B)", inputType: "number", min: 0 },
             { id: "C", parameter: "Closing balance (C)", inputType: "number", min: 0 },
             { id: "D", parameter: "Reconciliation (D) = A+B-C", inputType: "number", calculate: "(A + B) - C", readOnly: true },

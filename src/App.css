@@ -393,3 +393,9 @@ th:first-child {
     gap: 15px;
   }
 }
+
+/* Targets the div inside the last row of your table to overwrite the inline styles */
+tr:last-child td div {
+    color: #000000 !important;
+    background-color: transparent !important; 
+}

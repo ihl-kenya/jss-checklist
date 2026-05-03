@@ -3,6 +3,8 @@ import type { Field } from "../../types/form";
 import { isFieldVisible } from "../../utils/FormEngine";
 import TableRenderer from "./TableRenderer";
 import SectionSummaryTable from "./SectionSummaryTable";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 interface Props {
   field: Field;
@@ -19,7 +21,6 @@ const FieldRenderer: React.FC<Props> = ({ field, value, formData, onChange }) =>
   switch (field.type) {
     case "text":
     case "number":
-    case "date":
       return (
        <div className={containerClass} style={{ marginBottom: 16 }}>
           <label>{field.label}</label>
@@ -40,9 +41,36 @@ const FieldRenderer: React.FC<Props> = ({ field, value, formData, onChange }) =>
               onChange(field.name, val);
             }}
             placeholder={field.placeholder}
-            style={{ width: "100%", marginTop: 6, padding: 8 }}
+            style={{ width: "100%", marginTop: 6, padding: 8, boxSizing: "border-box" }}
             readOnly={field.readOnly}
           />
+          {field.helperText && <small style={{ display: "block", marginTop: 4, color: "#666" }}>{field.helperText}</small>}
+        </div>
+      );
+
+    case "date":
+      return (
+        <div className={containerClass} style={{ marginBottom: 16 }}>
+          <label>{field.label}</label>
+          <div style={{ marginTop: 6, display: "block", width: "100%" }}>
+            <DatePicker
+              selected={value ? new Date(value) : null}
+              onChange={(date: Date | null) => {
+                const dateString = date 
+                  ? new Date(date.getTime() - date.getTimezoneOffset() * 60000).toISOString().split("T")[0] 
+                  : "";
+                onChange(field.name, dateString);
+              }}
+              dateFormat={(field as any).dateFormat || "dd/MM/yyyy"}
+              placeholderText={(field as any).placeholderText || "dd/mm/yyyy"}
+              disabled={field.readOnly}
+              readOnly={field.readOnly}
+              customInput={
+                <input style={{ width: "100%", padding: 8, boxSizing: "border-box", border: "1px solid #ccc", borderRadius: "4px" }} />
+              }
+              wrapperClassName="w-full"
+            />
+          </div>
           {field.helperText && <small style={{ display: "block", marginTop: 4, color: "#666" }}>{field.helperText}</small>}
         </div>
       );
@@ -54,7 +82,7 @@ const FieldRenderer: React.FC<Props> = ({ field, value, formData, onChange }) =>
           <textarea
             value={value || ""}
             onChange={(e) => onChange(field.name, e.target.value)}
-            style={{ width: "100%", marginTop: 6, padding: 8, minHeight: 100 }}
+            style={{ width: "100%", marginTop: 6, padding: 8, minHeight: 100, boxSizing: "border-box" }}
             readOnly={field.readOnly}
           />
           {field.helperText && <small>{field.helperText}</small>}
@@ -68,11 +96,10 @@ const FieldRenderer: React.FC<Props> = ({ field, value, formData, onChange }) =>
           <select
             value={value || ""}
             onChange={(e) => onChange(field.name, e.target.value)}
-            style={{ width: "100%", marginTop: 6, padding: 8 }}
+            style={{ width: "100%", marginTop: 6, padding: 8, boxSizing: "border-box" }}
             disabled={field.readOnly}
           >
             <option value="">Select...</option>
-            {/* Cast as SelectField to ensure options exist for TS */}
             {(field as any).options?.map((option: any) => (
               <option key={option.value} value={option.value}>
                 {option.label}
@@ -92,7 +119,7 @@ const FieldRenderer: React.FC<Props> = ({ field, value, formData, onChange }) =>
             value={value || ""}
             onChange={(e) => onChange(field.name, e.target.value)}
             placeholder="Type to search..."
-            style={{ width: "100%", marginTop: 6, padding: 8 }}
+            style={{ width: "100%", marginTop: 6, padding: 8, boxSizing: "border-box" }}
             disabled={field.readOnly}
           />
           <datalist id={`list-${field.name}`}>

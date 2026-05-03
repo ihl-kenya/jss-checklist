@@ -107,14 +107,7 @@ export const section5: FormSection = {
           options: yesNoOptions 
         },
         { name: "expiredSeparate", label: "vii. Are there expired and/or unusable items kept separate from other stock?", type: "radio", options: yesNoOptions },
-        { 
-          name: "expiredStoredSeparately", 
-          label: "Are expired/unusable HPT stored separately from other items?", 
-          type: "radio", 
-          options: yesNoOptions,
-          className: "indented-field",
-          visibleWhen: [{ field: "expiredSeparate", equals: "yes" }]
-        },
+        
         { 
           name: "f058Recording", 
           label: "viii. Are expired HPT in the store recorded in the FO58 register (or other suitable register with all the data required - name of item, qty expired, value, reason for expiry etc.)", 

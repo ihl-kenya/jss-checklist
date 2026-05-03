@@ -35,7 +35,13 @@ const generatedActionPlanTables = summaryMappings.map((mapping) => ({
     { key: "actionRequired", label: "ACTION REQUIRED", type: "textarea" as const },
     { key: "responsiblePerson", label: "RESPONSIBLE PERSON", type: "text" as const },
     { key: "resourcesNeeded", label: "RESOURCES NEEDED", type: "textarea" as const },
-    { key: "completionDate", label: "COMPLETION DATE", type: "date" as const },
+    { 
+      key: "completionDate", 
+      label: "COMPLETION DATE", 
+      type: "date" as const,
+      dateFormat: "dd/MM/yyyy",
+      placeholderText: "dd/mm/yyyy"
+    },
   ],
   defaultValue: [{ issueGap: "", desiredResult: "", actionRequired: "", responsiblePerson: "", resourcesNeeded: "", completionDate: "" }],
 }));

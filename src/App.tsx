@@ -228,21 +228,23 @@ const App: React.FC = () => {
         >
           {/* Left Side: Navigation */}
           <div>
-            <button
-              type="button"
-              onClick={() => setCurrentSection((prev) => Math.max(prev - 1, 1))}
-              disabled={currentSection === 1}
-              style={{ marginRight: 10 }}
-            >
-              Previous
-            </button>
-            <button
-              type="button"
-              onClick={() => setCurrentSection((prev) => Math.min(prev + 1, 9))}
-              disabled={currentSection === 9}
-            >
-              Next
-            </button>
+            {currentSection !== 1 && (
+              <button
+                type="button"
+                onClick={() => setCurrentSection((prev) => Math.max(prev - 1, 1))}
+                style={{ marginRight: 10 }}
+              >
+                Previous
+              </button>
+            )}
+            {currentSection !== 9 && (
+              <button
+                type="button"
+                onClick={() => setCurrentSection((prev) => Math.min(prev + 1, 9))}
+              >
+                Next
+              </button>
+            )}
           </div>
 
           {/* Right Side: Database Actions */}

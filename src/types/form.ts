@@ -27,24 +27,32 @@ export interface BaseField {
   name: string;
   label: string;
   type: FieldType;
-  className?: string,
+  className?: string;
   placeholder?: string;
   required?: boolean;
   helperText?: string;
   visibleWhen?: VisibleWhenRule[];
   readOnly?: boolean;
-  defaultValue?:any;
+  defaultValue?: any;
   min?: number;
   max?: number;
   isFixed?: boolean;
 }
 
+// 1. Removed "date" from InputField
 export interface InputField extends BaseField {
-  type: "text" | "number" | "date" | "textarea";
+  type: "text" | "number" | "textarea";
+}
+
+// 2. Created dedicated DateField interface
+export interface DateField extends BaseField {
+  type: "date";
+  dateFormat?: string;
+  placeholderText?: string;
 }
 
 export interface SelectField extends BaseField {
-  type: "select" | "radio" |"search-select";
+  type: "select" | "radio" | "search-select";
   options?: Option[];
 }
 
@@ -58,6 +66,8 @@ export interface MultiSelectField extends BaseField {
 }
 
 export interface TableColumn {
+  dateFormat?: string; 
+  placeholderText?: string; 
   key: string;
   label: string;
   type: "text" | "number" | "textarea" | "select" | "date" | "checkbox";
@@ -85,8 +95,10 @@ export interface SectionSummaryField extends BaseField {
   minRows?: number;
 }
 
+// 3. Added DateField to the exported Field union
 export type Field =
   | InputField
+  | DateField
   | SelectField
   | CheckboxField
   | MultiSelectField
@@ -97,7 +109,7 @@ export interface FieldGroup {
   title?: string;
   fields: Field[];
   className?: string;
-  description?: string,
+  description?: string;
 }
 
 export interface FormSection {

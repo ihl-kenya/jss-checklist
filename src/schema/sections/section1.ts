@@ -70,12 +70,14 @@ export const section1: FormSection = {
           type: "text", 
           readOnly: true 
         },
-
         // ROW 3 
         { 
           name: "dateOfVisit",
           label: "Date of Visit:",
-          type: "date" 
+          type: "date",
+          // Add these new properties because your updated DateField interface now allows them!
+          dateFormat: "dd/MM/yyyy",
+          placeholderText: "dd/mm/yyyy"
         },
         { 
           name: "supervisionTeamNo",
