@@ -75,7 +75,6 @@ export const section1: FormSection = {
           name: "dateOfVisit",
           label: "Date of Visit:",
           type: "date",
-          // Add these new properties because your updated DateField interface now allows them!
           dateFormat: "dd/MM/yyyy",
           placeholderText: "dd/mm/yyyy"
         },
@@ -358,7 +357,7 @@ export const section1: FormSection = {
           type: "table",
           visibleWhen: [{ field: "hasLaboratory", equals: "yes" }],
           columns: [
-            { key: "test", label: "TEST", type: "text", readOnly: true, width: "60%" },
+            { key: "test", label: "TEST", type: "text", width: "60%" },
             { key: "isYes", label: "Yes", type: "checkbox", width: "20%" },
             { key: "isNo", label: "No", type: "checkbox", width: "20%" },
           ],

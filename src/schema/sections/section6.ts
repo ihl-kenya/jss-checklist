@@ -52,7 +52,7 @@ export const section6: FormSection = {
         },
         {
           name: "pvTrainingSessions",
-          label: "iv. How many training events/sessions for pharmacovigilance in previous 1 year?",
+          label: "iv. How many pharmacovigilance training events were attended by facility staff in the previous 12 months?",
           type: "number",
         },
         {

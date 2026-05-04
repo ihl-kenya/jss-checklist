@@ -62,7 +62,12 @@ export const section2: FormSection = {
           columns: [
             { key: "actionPoint", label: "Previous Action point", type: "textarea" },
             { key: "status", label: "Status Done/Not Done", type: "select", options: doneOptions },
-            { key: "reasonNotDone", label: "Reason for Not done", type: "textarea" },
+            { 
+              key: "reasonNotDone", 
+              label: "Reason for Not done", 
+              type: "textarea",
+              disabledWhen: [{ field: "status", equals: "Done" }] 
+            } as any, 
           ],
           minRows: 2,
         },
@@ -71,6 +76,17 @@ export const section2: FormSection = {
           label: "iv. Has any of the departmental staff attended any commodity management training (in person or online) in the last 1 year?",
           type: "radio",
           options: yesNoOptions,
+        },
+        {
+          name: "trainingType",
+          label: "Was the training Online or Physical?",
+          type: "radio", 
+          options: [
+            { label: "Online", value: "online" },
+            { label: "Physical", value: "physical" },
+            { label: "Both", value: "both" } 
+          ],
+          visibleWhen: [{ field: "staffTrainedCommodityManagement", equals: "yes" }]
         },
         { 
           name: "numberTrained", 

@@ -39,12 +39,10 @@ export interface BaseField {
   isFixed?: boolean;
 }
 
-// 1. Removed "date" from InputField
 export interface InputField extends BaseField {
   type: "text" | "number" | "textarea";
 }
 
-// 2. Created dedicated DateField interface
 export interface DateField extends BaseField {
   type: "date";
   dateFormat?: string;
@@ -78,6 +76,7 @@ export interface TableColumn {
   max?: number;
   min?: number;
   calculate?: (row: Record<string, any>) => string | number;
+  disabledWhen?: Array<{ field: string; equals: string | boolean | number }>;
 }
 
 export interface TableField extends BaseField {

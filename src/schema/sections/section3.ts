@@ -1,14 +1,20 @@
 import type { FormSection, TableColumn } from "../../types/form";
 import { makeSectionSummary, yesNoOptions } from "../../utils/helpers";
 
-// Dynamically grab the current year (e.g., 2024) so it auto-updates next year!
+// Dynamically grab the current year (e.g., 2024)
 const currentYear = new Date().getFullYear();
+
+// Generate an array of year options for the dropdown (e.g., from current year back 50 years)
+const yearOptions = Array.from({ length: 50 }, (_, i) => {
+  const year = (currentYear - i).toString();
+  return { label: year, value: year };
+});
 
 const guidelineColumns: TableColumn[] = [
   { key: "guideline", label: "Guideline (*)", type: "text", readOnly: true },
   { key: "available", label: "Available YES/NO (**)", type: "select", options: yesNoOptions },
-  // Changed to type "number" and applied the currentYear as the maximum allowed value
-  { key: "year", label: "Year of Publication", type: "number", max: currentYear }, 
+  // Changed type to "select" and attached the generated yearOptions
+  { key: "year", label: "Year of Publication", type: "select", options: yearOptions }, 
 ];
 
 export const section3: FormSection = {
@@ -64,7 +70,8 @@ export const section3: FormSection = {
           columns: [
             { key: "guideline", label: "Algorithm", type: "text", readOnly: true },
             { key: "available", label: "Available Yes/No", type: "select", options: yesNoOptions },
-            { key: "year", label: "If yes, specify which year?", type: "number", max: currentYear },
+            // Changed type to "select" and attached the generated yearOptions here too
+            { key: "year", label: "If yes, specify which year?", type: "select", options: yearOptions },
           ],
           defaultValue: [
             { guideline: "HIV", available: "", year: "" },

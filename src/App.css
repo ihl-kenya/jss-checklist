@@ -399,3 +399,19 @@ tr:last-child td div {
     color: #000000 !important;
     background-color: transparent !important; 
 }
+
+/* If it's a generic wrapper you control */
+.date-picker-wrapper,
+.date-input-container {
+  position: relative;
+  z-index: 9999 !important;
+}
+
+/* If you are using react-datepicker specifically, this is the magic class */
+.react-datepicker-popper {
+  z-index: 9999 !important;
+}
+
+.react-datepicker-wrapper {
+  width: 50%;
+}
