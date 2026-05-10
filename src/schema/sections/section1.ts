@@ -4,8 +4,11 @@ import {
   makeSectionSummary,
   yesNoOptions,
 } from "../../utils/helpers";
-import { mflFacilities } from "../../data/mflFacilities"; 
 
+/**
+ * Standardized position options for various committee and team member fields.
+ * Transforms human-readable labels into machine-readable values.
+ */
 const positionOptions = [
   "Facility in charge",
   "Pharmacist in charge",
@@ -22,104 +25,7 @@ export const section1: FormSection = {
   title: "1. Facility Governance and Services",
   groups: [
     {
-      title: "A. General",
-      className: "general-info-grid", 
-      fields: [
-        // ROW 1 
-        { 
-          name: "facilityName",
-          label: "Facility Name",
-          type: "search-select", 
-          helperText: "Select a facility",
-          options: mflFacilities
-          .slice()
-          .sort((a, b) => a.facilityName.localeCompare(b.facilityName))
-          .map((facility: any) => ({
-            label: facility.facilityName,
-            value: facility.facilityName
-          }))
-        },
-        { 
-          name: "county", 
-          label: "County",
-          type: "text",
-          readOnly: true 
-        },
-        { 
-          name: "subCounty", 
-          label: "Sub-county:",
-          type: "text", 
-          readOnly: true 
-        },
-        // ROW 2
-        { 
-          name: "facilityLevel",
-          label: "Facility Level",
-          type: "text", 
-          readOnly: true 
-        },
-        {
-          name: "ownership",
-          label: "Ownership (MoH, FBO, Private, Others)",
-          type: "text", 
-          readOnly: true,
-        },
-        { 
-          name: "facilityMflCode",
-          label: "Facility MFL Code", 
-          type: "text", 
-          readOnly: true 
-        },
-        // ROW 3 
-        { 
-          name: "dateOfVisit",
-          label: "Date of Visit:",
-          type: "date",
-          dateFormat: "dd/MM/yyyy",
-          placeholderText: "dd/mm/yyyy"
-        },
-        { 
-          name: "supervisionTeamNo",
-          label: "Supervision Team Number",
-          type: "text" 
-        },
-        { 
-          name: "teamLeader",
-          label: "Name of Supervision Team Leader:",
-          type: "text" 
-        },
-
-        // -ROW 4 
-        { 
-          name: "respondentName", 
-          label: "Name of Respondent", 
-          type: "text" 
-        },
-        {
-          name: "respondentPosition",
-          label: "Position/Designation of Respondent",
-          type: "select",
-          options: positionOptions,
-        },
-        {
-          name: "respondentPositionOther",
-          label: "Please specify other position",
-          type: "text",
-          placeholder: "Enter designation...",
-          visibleWhen: [{ 
-            field: "respondentPosition", 
-            equals: "other" 
-          }],
-        },
-        { 
-          name: "respondentPhone", 
-          label: "Tel. Contact of Respondent",
-          type: "text" 
-        },
-      ],
-    },
-    {
-      title: "B. Facility Management/Governance",
+      title: "A. Facility Management/Governance",
       description: "The names/positions of core members of the different teams can be completed by the county pharmacist/HPM mentor, as applicable, prior to visit, to save time for checking/reviewing minutes of the last meetings",
       fields: [
         {
@@ -132,8 +38,7 @@ export const section1: FormSection = {
           name: "facilityManagementMembers",
           label: "Facility Management Team Members",
           type: "table",
-          visibleWhen: [{ field: "facilityManagementTeam",
-             equals: "available" }],
+          visibleWhen: [{ field: "facilityManagementTeam", equals: "available" }],
           columns: [
             {
               key: "position",
@@ -294,7 +199,7 @@ export const section1: FormSection = {
         },
         {
           name: "wasteDisposalDocsFO58",
-          label: "Availability of FO58 Form",
+          label: "Availability of FO58 Form/ Expiry Register",
           type: "select",
           options: availableOptions,
         },
@@ -316,7 +221,7 @@ export const section1: FormSection = {
       ],
     },
     {
-      title: "C. Treatment Services Offered",
+      title: "B. Treatment Services Offered", // Renamed from C to B
       fields: [
         {
           name: "treatmentServices",
@@ -343,7 +248,7 @@ export const section1: FormSection = {
       ],
     },
     {
-      title: "D. Laboratory Tests Offered",
+      title: "C. Laboratory Tests Offered", // Renamed from D to C
       fields: [
         {
           name: "hasLaboratory",
@@ -381,7 +286,7 @@ export const section1: FormSection = {
       ],
     },
     {
-      title: "E. In Conclusion",
+      title: "D. In Conclusion", // Renamed from E to D
       fields: [
         makeSectionSummary(
           "Facility Governance and Services",

@@ -341,59 +341,6 @@ th:first-child {
   padding-bottom: 0;
 }
 
-
-/* =========================================
-   MOBILE RESPONSIVENESS (MEDIA QUERIES)
-   ========================================= */
-@media screen and (max-width: 768px) {
-  #root {
-    padding: 10px;
-  }
-
-  .header-banner {
-    flex-direction: column;
-    padding: 15px;
-    gap: 15px;
-    text-align: center;
-  }
-
-  .header-logo {
-    height: 60px;
-  }
-
-  .header-titles h1.title-line {
-    font-size: 1.5rem;
-  }
-
-  .header-titles h2.title-line {
-    font-size: 1.1rem;
-  }
-
-  .general-info-grid {
-    grid-template-columns: 1fr;
-    gap: 15px;
-  }
-
-  .form-section {
-    padding: 15px;
-    margin-bottom: 25px;
-  }
-
-  th:first-child, td:first-child {
-    min-width: 150px; 
-    width: 40%;
-  }
-
-  .indented-field {
-    margin-left: 20px; 
-  }
-  
-  .bottom-nav {
-    flex-direction: column;
-    gap: 15px;
-  }
-}
-
 /* Targets the div inside the last row of your table to overwrite the inline styles */
 tr:last-child td div {
     color: #000000 !important;
@@ -414,4 +361,113 @@ tr:last-child td div {
 
 .react-datepicker-wrapper {
   width: 50%;
+}
+
+/* =========================================
+   MOBILE RESPONSIVENESS (MEDIA QUERIES)
+   ========================================= */
+@media screen and (max-width: 768px) {
+  #root {
+    padding: 10px;
+  }
+
+  /* --- Headers --- */
+  .header-banner {
+    flex-direction: column;
+    padding: 15px;
+    gap: 15px;
+    text-align: center;
+  }
+
+  .header-logo {
+    height: 60px;
+  }
+
+  .header-titles h1.title-line {
+    font-size: 1.5rem;
+  }
+
+  .header-titles h2.title-line {
+    font-size: 1.1rem;
+  }
+
+  /* Make the global info bar (MFL Code/Facility) stack neatly */
+  .global-facility-info {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    font-size: 13px;
+    padding: 10px !important;
+  }
+  
+  .global-facility-info span {
+    margin-right: 0 !important; /* Overrides inline margin */
+  }
+
+  /* --- Form Layouts --- */
+  .general-info-grid {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+
+  .form-section {
+    padding: 15px;
+    margin-bottom: 20px;
+  }
+
+  .indented-field {
+    margin-left: 20px; 
+  }
+
+  /* Ensure date picker uses full width on mobile instead of 50% */
+  .react-datepicker-wrapper {
+    width: 100%;
+  }
+
+  /* --- Navigation Tabs --- */
+  /* Shrink tabs slightly so they fit better on mobile without taking up half the screen */
+  .section-tab {
+    padding: 8px 12px !important;
+    font-size: 13px !important;
+    flex: 1 1 calc(33% - 10px); /* Makes them wrap neatly into 3 columns */
+    text-align: center;
+  }
+
+  /* --- Tables --- */
+  /* Reduce padding inside table cells to maximize horizontal space */
+  th, td {
+    padding: 6px;
+    font-size: 13px;
+  }
+
+  /* Shrink the sticky column slightly so checkboxes have more room */
+  th:first-child, td:first-child {
+    min-width: 120px; 
+    width: 40%;
+  }
+
+  /* --- Bottom Navigation Buttons --- */
+  /* Make buttons full width for easier tapping on touch screens */
+  .bottom-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 2px solid #e9ecef;
+  }
+
+  .bottom-nav > div {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+  }
+
+  .bottom-nav button {
+    width: 100%;
+    margin: 0 !important; /* Removes horizontal margins */
+    padding: 12px;
+  }
 }

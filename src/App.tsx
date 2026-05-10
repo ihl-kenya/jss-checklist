@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Header from "./components/common/Header";
+import Section0 from "./components/sections/Section0"; 
 import Section1 from "./components/sections/Section1";
 import Section2 from "./components/sections/Section2";
 import Section3 from "./components/sections/Section3";
@@ -11,31 +12,28 @@ import Section8 from "./components/sections/Section8";
 import Section9 from "./components/sections/Section9";
 import { applyGlobalFormLogic } from "./utils/FormEngine";
 
-// Storage Keys
 const STORAGE_KEY = "jss_checklist_draft";
 const SECTION_KEY = "jss_current_section";
 
 const App: React.FC = () => {
-  // --- Initialize State from LocalStorage (Save & Continue Logic) ---
   const [formData, setFormData] = useState<Record<string, any>>(() => {
     const saved = localStorage.getItem(STORAGE_KEY);
     return saved ? JSON.parse(saved) : {};
   });
 
+  // Default to 0 (General Info) instead of 1
   const [currentSection, setCurrentSection] = useState(() => {
     const saved = localStorage.getItem(SECTION_KEY);
-    return saved ? parseInt(saved, 10) : 1;
+    return saved ? parseInt(saved, 10) : 0;
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [lastSaved, setLastSaved] = useState<string>("");
 
-  // --- Auto-save to LocalStorage whenever data or section changes ---
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(formData));
     localStorage.setItem(SECTION_KEY, currentSection.toString());
     
-    // Optional: Update a timestamp to show the user it's saved
     const now = new Date();
     setLastSaved(now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
   }, [formData, currentSection]);
@@ -51,97 +49,68 @@ const App: React.FC = () => {
     setFormData((prev) => applyGlobalFormLogic(prev));
   }, []);
 
-  // --- Scroll to top whenever the section changes ---
   useEffect(() => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }, [currentSection]);
 
-  // --- Submit Logic ---
   const handleSubmit = async () => {
-    
-    const validateSection1 = (data: Record<string, any>) => {
+    const isEmpty = (val: any) => val === undefined || val === null || String(val).trim() === "";
+
+    // Validate General Info (Section 0) ONLY
+    const validateGeneralInfo = (data: Record<string, any>) => {
       const missing: string[] = [];
-
-      const isEmpty = (val: any) => val === undefined || val === null || String(val).trim() === "";
-
-      const generalFields = ["facilityName", "dateOfVisit", "supervisionTeamNo", "teamLeader", "respondentName", "respondentPosition", "respondentPhone"];
-      generalFields.forEach(f => { if (isEmpty(data[f])) missing.push(f); });
+      const generalFields = [
+        "facilityName", 
+        "dateOfVisit", 
+        "supervisionTeamNo", 
+        "teamLeader", 
+        "respondentName", 
+        "respondentPosition", 
+        "respondentPhone"
+      ];
+      
+      generalFields.forEach(f => { 
+        if (isEmpty(data[f])) missing.push(f); 
+      });
       
       if (data.respondentPosition === "other" && isEmpty(data.respondentPositionOther)) {
         missing.push("respondentPositionOther");
       }
-
-      const govParents = [
-        "facilityManagementTeam", 
-        "qualityImprovementTeam", 
-        "mtcAvailable", 
-        "advanceDeliveryAlert", 
-        "haswasteDisposalCommitteeMembers", 
-        "wasteDisposalDocsFO58"
-      ];
-      govParents.forEach(f => { if (isEmpty(data[f])) missing.push(f); });
-
-      if (!data.hptReceiptFocalPersons || data.hptReceiptFocalPersons.length === 0) {
-        missing.push("hptReceiptFocalPersons");
-      } else if (data.hptReceiptFocalPersons.includes("other") && isEmpty(data.hptReceiptOther)) {
-        missing.push("hptReceiptOther");
-      }
-
-      if (data.facilityManagementTeam === "available" && isEmpty(data.facilityManagementMinutes)) missing.push("facilityManagementMinutes");
-      if (data.facilityManagementMinutes === "available" && isEmpty(data.facilityManagementLastMeetingDate)) missing.push("facilityManagementLastMeetingDate");
-
-      if (data.qualityImprovementTeam === "available" && isEmpty(data.qualityImprovementMinutes)) missing.push("qualityImprovementMinutes");
-      if (data.qualityImprovementMinutes === "available" && isEmpty(data.qualityImprovementLastMeetingDate)) missing.push("qualityImprovementLastMeetingDate");
-
-      if (data.mtcAvailable === "available" && isEmpty(data.mtcMinutes)) missing.push("mtcMinutes");
-      if (data.mtcMinutes === "available" && isEmpty(data.mtcLastMeetingDate)) missing.push("mtcLastMeetingDate");
-
-      if (data.haswasteDisposalCommitteeMembers === "yes" && isEmpty(data.wasteDisposalMinutes)) missing.push("wasteDisposalMinutes");
-      if (data.wasteDisposalDocsFO58 === "available" && isEmpty(data.lastDisposalDate)) missing.push("lastDisposalDate");
-
-      if (isEmpty(data.hasLaboratory)) missing.push("hasLaboratory");
-
+      
       return missing;
     };
 
-    const missingFields = validateSection1(formData);
-
-    if (missingFields.length > 0) {
-      console.warn("Missing fields:", missingFields);
-      alert("Please ensure you have answered all Section 1 questions (Parts A, B, C, and D).");
-      setCurrentSection(1); 
-      return; 
+    const missingGeneral = validateGeneralInfo(formData);
+    
+    if (missingGeneral.length > 0) {
+      // Improved alert to show exactly what the system thinks is missing!
+      alert(`Please ensure you have filled out all General Information details.\n\nMissing fields: ${missingGeneral.join(", ")}`);
+      setCurrentSection(0); 
+      return;
     }
+
+    // --- REMOVED SECTION 1 VALIDATION SO IT IS NO LONGER MANDATORY ---
 
     if (!window.confirm("Are you sure you want to submit the final report?")) return;
     
     setIsSubmitting(true);
     try {
-      const googleScriptUrl = "https://script.google.com/macros/s/AKfycbwmnIRykX7jhC5r-1JeSmxFa77DiGUDq5gn8VI-A8Knzt1CsjIrpASaDIbZq4RlVtZU/exec";
-
+      const googleScriptUrl = "https://script.google.com/macros/s/AKfycbxbzhJ9b580WByI7q-oeUiVhuZA4wM32HzqQO28iKGZRso__oBXdDtWy9iW9Ea5qy5j/exec";
       await fetch(googleScriptUrl, {
         method: "POST",
         mode: "no-cors", 
-        headers: {
-          "Content-Type": "text/plain;charset=utf-8",
-        },
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
         body: JSON.stringify(formData),
       });
 
       alert("Form submitted successfully!");
-
-      // --- Clear Storage after successful submission ---
       localStorage.removeItem(STORAGE_KEY);
       localStorage.removeItem(SECTION_KEY);
       setFormData({});
-      setCurrentSection(1);
+      setCurrentSection(0); // Reset to General Info
 
     } catch (error) {
       alert("There was an error submitting the form. Please try again.");
-      console.error(error);
     } finally {
       setIsSubmitting(false);
     }
@@ -152,7 +121,6 @@ const App: React.FC = () => {
     window.open(googleSheetUrl, "_blank");
   };
 
-  // Helper to clear draft manually if needed
   const handleReset = () => {
     if (window.confirm("This will delete all current progress. Are you sure?")) {
       localStorage.removeItem(STORAGE_KEY);
@@ -164,6 +132,7 @@ const App: React.FC = () => {
   const renderSection = () => {
     const props = { formData, onChange: handleChange };
     switch (currentSection) {
+      case 0: return <Section0 {...props} />; 
       case 1: return <Section1 {...props} />;
       case 2: return <Section2 {...props} />;
       case 3: return <Section3 {...props} />;
@@ -179,59 +148,34 @@ const App: React.FC = () => {
 
   return (
     <>
-      <div
-        style={{
-          maxWidth: 1300,
-          margin: "0 auto",
-          padding: "24px 20px 40px 20px",
-        }}
-      >
-        <Header /> 
+      <div style={{ maxWidth: 1300, margin: "0 auto", padding: "24px 20px 40px 20px" }}>
+        <Header mflCode={formData.facilityMflCode} facilityName={formData.facilityName} /> 
 
-        {/* Auto-save Status Indicator */}
         <div style={{ textAlign: 'right', fontSize: '0.8rem', color: '#6c757d', marginBottom: 10 }}>
           {formData && Object.keys(formData).length > 0 ? `Draft auto-saved at ${lastSaved}` : "New Interview"}
         </div>
 
-        <div
-          style={{
-            display: "flex",
-            gap: 8,
-            flexWrap: "wrap",
-            justifyContent: "center",
-            marginBottom: 30,
-          }}
-        >
-          {Array.from({ length: 9 }, (_, i) => i + 1).map((num) => (
+        <div style={{ display: "flex", gap: 8, flexWrap: "wrap", justifyContent: "center", marginBottom: 30 }}>
+          {Array.from({ length: 10 }, (_, i) => i).map((num) => (
             <button
               key={num}
               onClick={() => setCurrentSection(num)}
               className={`section-tab ${currentSection === num ? "active" : ""}`}
               type="button"
             >
-              Section {num}
+              {num === 0 ? "General Info" : `Section ${num}`}
             </button>
           ))}
         </div>
 
         {renderSection()}
 
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            marginTop: 30,
-            paddingTop: 20,
-            borderTop: "2px solid #e9ecef"
-          }}
-        >
-          {/* Left Side: Navigation */}
+        <div className="bottom-nav" style={{ display: "flex", justifyContent: "space-between", marginTop: 30, paddingTop: 20, borderTop: "2px solid #e9ecef" }}>
           <div>
-            {currentSection !== 1 && (
+            {currentSection !== 0 && ( 
               <button
                 type="button"
-                onClick={() => setCurrentSection((prev) => Math.max(prev - 1, 1))}
+                onClick={() => setCurrentSection((prev) => Math.max(prev - 1, 0))}
                 style={{ marginRight: 10 }}
               >
                 Previous
@@ -247,31 +191,17 @@ const App: React.FC = () => {
             )}
           </div>
 
-          {/* Right Side: Database Actions */}
           <div>
-            <button
-              type="button"
-              onClick={handleReset}
-              style={{ backgroundColor: "#dc3545", marginRight: 10, color: "white" }}
-            >
+            <button type="button" onClick={handleReset} style={{ backgroundColor: "#dc3545", marginRight: 10, color: "white" }}>
               Clear Draft
             </button>
             
-            <button
-              type="button"
-              onClick={handleSeeResults}
-              style={{ backgroundColor: "#6c757d", marginRight: 15 }}
-            >
+            <button type="button" onClick={handleSeeResults} style={{ backgroundColor: "#6c757d", marginRight: 15 }}>
               See Results
             </button>
 
             {currentSection === 9 && (
-              <button
-                type="button"
-                onClick={handleSubmit}
-                disabled={isSubmitting}
-                style={{ backgroundColor: "#28a745", color: "white" }}
-              >
+              <button type="button" onClick={handleSubmit} disabled={isSubmitting} style={{ backgroundColor: "#28a745", color: "white" }}>
                 {isSubmitting ? "Submitting..." : "Submit"}
               </button>
             )}
