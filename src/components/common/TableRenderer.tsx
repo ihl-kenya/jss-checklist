@@ -58,12 +58,35 @@ const TableRenderer: React.FC<Props> = ({ field, value = [], formData = {}, onCh
       newRow.remarks = "";
     }
 
-    // --- SECTION 7: STOCK-OUT CLEANUP ---
+    // --- SECTION 7: MATRIX TABLE DEPENDENCIES CLEANUP ---
+    // 1. Stock Out
     if (newRow.id === "stockOut3Months" && normalizedValue === "no") {
-      const daysRowIndex = updatedRows.findIndex(r => r.id === "daysStockedOut");
-      if (daysRowIndex !== -1) {
-        updatedRows[daysRowIndex] = { ...updatedRows[daysRowIndex], [key]: "" };
-      }
+      const targetIdx = updatedRows.findIndex(r => r.id === "daysStockedOut");
+      if (targetIdx !== -1) updatedRows[targetIdx] = { ...updatedRows[targetIdx], [key]: "" };
+    }
+
+    // 2. Issues from Higher Level
+    if (newRow.id === "endorsed" && normalizedValue === "no") {
+      ["qtyIssued", "qtyReceived", "reason", "sopAssessment", "electronicBin"].forEach(targetId => {
+        const targetIdx = updatedRows.findIndex(r => r.id === targetId);
+        if (targetIdx !== -1) updatedRows[targetIdx] = { ...updatedRows[targetIdx], [key]: "" };
+      });
+    }
+
+    // 3. Issues to Other Facilities
+    if (newRow.id === "didIssue" && normalizedValue === "no") {
+      ["qtyBinCard", "qtyS11"].forEach(targetId => {
+        const targetIdx = updatedRows.findIndex(r => r.id === targetId);
+        if (targetIdx !== -1) updatedRows[targetIdx] = { ...updatedRows[targetIdx], [key]: "" };
+      });
+    }
+
+    // 4. Store to Dispensing
+    if (newRow.id === "recordsKept" && normalizedValue === "no") {
+      ["qtyIssuedStore", "qtyReceivedDispensing", "reasonVariance"].forEach(targetId => {
+        const targetIdx = updatedRows.findIndex(r => r.id === targetId);
+        if (targetIdx !== -1) updatedRows[targetIdx] = { ...updatedRows[targetIdx], [key]: "" };
+      });
     }
 
     updatedRows[rowIndex] = newRow;
@@ -161,49 +184,67 @@ const TableRenderer: React.FC<Props> = ({ field, value = [], formData = {}, onCh
                     const cellType = isParam ? "text" : (row.inputType || col.type || "text");
                     
                     let isReadOnly = isParam || row.readOnly || col.readOnly;
+                    let isGreyedOut = false;
                     
+                    // --- REFACTORED READ-ONLY & GREY-OUT LOGIC ---
                     if (col.key === "positionOther" && row.position !== "other") {
-                      isReadOnly = true;
+                      isReadOnly = true; isGreyedOut = true;
                     }
 
                     if (col.key === "reasonNotDone") {
                       const statusValue = String(row.status || "").toLowerCase();
                       if (statusValue === "done" || statusValue === "yes") {
-                        isReadOnly = true;
+                        isReadOnly = true; isGreyedOut = true;
                       }
                     }
 
                     if (col.key === "year") {
                       const isAvailable = String(row.available || "").toLowerCase();
                       if (isAvailable === "no") {
-                        isReadOnly = true;
+                        isReadOnly = true; isGreyedOut = true;
                       }
                     }
 
                     if (col.key === "completeness" || col.key === "remarks") {
                       const toolAvailability = String(row.availability || "").toLowerCase();
                       if (toolAvailability === "no") {
-                        isReadOnly = true;
+                        isReadOnly = true; isGreyedOut = true;
                       }
                     }
 
+                    // --- SECTION 7: MATRIX TABLE LOCKS ---
                     if (row.id === "daysStockedOut") {
-                      const stockOutRow = rows.find(r => r.id === "stockOut3Months");
-                      if (stockOutRow && String(stockOutRow[col.key]).toLowerCase() === "no") {
-                        isReadOnly = true;
+                      const parentRow = rows.find(r => r.id === "stockOut3Months");
+                      if (parentRow && String(parentRow[col.key]).toLowerCase() === "no") {
+                        isReadOnly = true; isGreyedOut = true;
                       }
                     }
+
+                    if (["qtyIssued", "qtyReceived", "discrepancy", "reason", "valVariance", "sopAssessment", "electronicBin"].includes(row.id)) {
+                      const parentRow = rows.find(r => r.id === "endorsed");
+                      if (parentRow && String(parentRow[col.key]).toLowerCase() === "no") {
+                        isReadOnly = true; isGreyedOut = true;
+                      }
+                    }
+
+                    if (["qtyBinCard", "qtyS11", "varianceS11", "valVarianceS11"].includes(row.id)) {
+                      const parentRow = rows.find(r => r.id === "didIssue");
+                      if (parentRow && String(parentRow[col.key]).toLowerCase() === "no") {
+                        isReadOnly = true; isGreyedOut = true;
+                      }
+                    }
+
+                    if (["qtyIssuedStore", "qtyReceivedDispensing", "diffStoreDispensing", "reasonVariance", "valVarianceDisp"].includes(row.id)) {
+                      const parentRow = rows.find(r => r.id === "recordsKept");
+                      if (parentRow && String(parentRow[col.key]).toLowerCase() === "no") {
+                        isReadOnly = true; isGreyedOut = true;
+                      }
+                    }
+                    // ---------------------------------------------
 
                     const cellMax = col.max !== undefined ? col.max : row.max;
                     const cellMin = col.min !== undefined ? col.min : row.min;
                     const cellOptions = row.options || col.options;
-
-                    const isGreyedOut = 
-                      col.key === "positionOther" || 
-                      row.id === "daysStockedOut" || 
-                      (col.key === "reasonNotDone" && (String(row.status || "").toLowerCase() === "done" || String(row.status || "").toLowerCase() === "yes")) ||
-                      (col.key === "year" && String(row.available || "").toLowerCase() === "no") ||
-                      ((col.key === "completeness" || col.key === "remarks") && String(row.availability || "").toLowerCase() === "no");
 
                     return (
                       <td key={col.key} style={{ width: col.width || "auto", padding: 4, border: "1px solid #ddd" }}>
@@ -277,14 +318,10 @@ const TableRenderer: React.FC<Props> = ({ field, value = [], formData = {}, onCh
                             dateFormat={(col as any).dateFormat || "dd/MM/yyyy"}
                             placeholderText={(col as any).placeholderText || "dd/mm/yyyy"}
                             disabled={isReadOnly}
-                            
-                            // --- NEW SETTINGS ADDED HERE ---
-                            //showMonthDropdown // Adds a month dropdown to the header
-                            //showYearDropdown  // Adds a year dropdown to the header
-                            //dropdownMode="select" 
-                            portalId="root-portal" // This teleports the calendar outside the table to prevent clipping!
-                            // -------------------------------
-                            
+                            showMonthDropdown 
+                            showYearDropdown  
+                            dropdownMode="select" 
+                            portalId="root-portal" 
                             customInput={
                               <input 
                                 style={{ 
