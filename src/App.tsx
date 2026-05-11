@@ -89,13 +89,12 @@ const App: React.FC = () => {
       return;
     }
 
-    // --- REMOVED SECTION 1 VALIDATION SO IT IS NO LONGER MANDATORY ---
 
     if (!window.confirm("Are you sure you want to submit the final report?")) return;
     
     setIsSubmitting(true);
     try {
-      const googleScriptUrl = "https://script.google.com/macros/s/AKfycbxbzhJ9b580WByI7q-oeUiVhuZA4wM32HzqQO28iKGZRso__oBXdDtWy9iW9Ea5qy5j/exec";
+      const googleScriptUrl = import.meta.env.VITE_GOOGLE_SCRIPT_URL as string;
       await fetch(googleScriptUrl, {
         method: "POST",
         mode: "no-cors", 
@@ -117,7 +116,7 @@ const App: React.FC = () => {
   };
 
   const handleSeeResults = () => {
-    const googleSheetUrl = "https://docs.google.com/spreadsheets/d/1tP3ypIsZDWEBG-rH7O7TUTVzzrcQI71VL1K-aJ201HQ/edit?gid=0#gid=0";
+    const googleSheetUrl = import.meta.env.VITE_GOOGLE_SHEET_URL as string;
     window.open(googleSheetUrl, "_blank");
   };
 
